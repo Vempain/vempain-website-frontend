@@ -1,0 +1,20 @@
+{
+  "extends" : "./tsconfig.app.json",
+  "compilerOptions" : {
+    "types" : [
+      "jest",
+      "node"
+    ],
+    "verbatimModuleSyntax" : false,
+    "allowImportingTsExtensions" : false,
+    "module" : "CommonJS",
+    "moduleResolution" : "node"
+  },
+  "include" : [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx"
+  ]
+}
+

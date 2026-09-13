@@ -1,0 +1,13 @@
+node_modules/
+coverage/
+target/
+build/
+dist/
+public/
+*.log
+.idea/
+
+src/buildInfo.json
+*.local
+.*.local
+*.iml
