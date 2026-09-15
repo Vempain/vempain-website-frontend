@@ -13,6 +13,7 @@ import type {
     WebSitePageDirectory
 } from '../models';
 import type {PagedRequest, PagedResponse} from "@vempain/vempain-auth-frontend";
+import {encodeApiPath} from '../tools/safePaths';
 
 
 export interface LastItemsResponseItem {
@@ -90,11 +91,15 @@ class PageAPI extends AbstractAPI {
         if (params.sortBy) searchParams.set('sortBy', params.sortBy);
         if (params.direction) searchParams.set('direction', params.direction);
         if (params.search) searchParams.set('search', params.search);
-        return await this.request<MusicDataResponse>(`/embeds/music/${identifier}${searchParams.size > 0 ? `?${searchParams.toString()}` : ''}`);
+        const safeIdentifier = encodeApiPath(identifier);
+        if (!safeIdentifier) return {error: 'Invalid embed identifier'};
+        return await this.request<MusicDataResponse>(`/embeds/music/${safeIdentifier}${searchParams.size > 0 ? `?${searchParams.toString()}` : ''}`);
     }
 
     async getGpsOverview(identifier: string): Promise<ApiResponse<GpsOverviewResponse>> {
-        return await this.request<GpsOverviewResponse>(`/embeds/gps/${identifier}/overview`);
+        const safeIdentifier = encodeApiPath(identifier);
+        if (!safeIdentifier) return {error: 'Invalid embed identifier'};
+        return await this.request<GpsOverviewResponse>(`/embeds/gps/${safeIdentifier}/overview`);
     }
 
     async getGpsClusters(identifier: string, params: {
@@ -109,17 +114,24 @@ class PageAPI extends AbstractAPI {
         if (params.maxLat !== undefined) searchParams.set('maxLat', String(params.maxLat));
         if (params.minLng !== undefined) searchParams.set('minLng', String(params.minLng));
         if (params.maxLng !== undefined) searchParams.set('maxLng', String(params.maxLng));
-        return await this.request<GpsClustersResponse>(`/embeds/gps/${identifier}/clusters?${searchParams.toString()}`);
+        const safeIdentifier = encodeApiPath(identifier);
+        if (!safeIdentifier) return {error: 'Invalid embed identifier'};
+        return await this.request<GpsClustersResponse>(`/embeds/gps/${safeIdentifier}/clusters?${searchParams.toString()}`);
     }
 
     async getGpsClusterPoints(identifier: string, clusterKey: string, limit = 250): Promise<ApiResponse<GpsClusterPointsResponse>> {
         const params = new URLSearchParams({limit: String(Math.max(1, Math.min(1000, limit)))});
-        return await this.request<GpsClusterPointsResponse>(`/embeds/gps/${identifier}/clusters/${clusterKey}/points?${params.toString()}`);
+        const safeIdentifier = encodeApiPath(identifier);
+        const safeClusterKey = encodeApiPath(clusterKey);
+        if (!safeIdentifier || !safeClusterKey) return {error: 'Invalid embed identifier'};
+        return await this.request<GpsClusterPointsResponse>(`/embeds/gps/${safeIdentifier}/clusters/${safeClusterKey}/points?${params.toString()}`);
     }
 
     async getGpsTrack(identifier: string, maxPoints = 3000): Promise<ApiResponse<GpsTrackResponse>> {
         const params = new URLSearchParams({maxPoints: String(Math.max(100, Math.min(10000, maxPoints)))});
-        return await this.request<GpsTrackResponse>(`/embeds/gps/${identifier}/track?${params.toString()}`);
+        const safeIdentifier = encodeApiPath(identifier);
+        if (!safeIdentifier) return {error: 'Invalid embed identifier'};
+        return await this.request<GpsTrackResponse>(`/embeds/gps/${safeIdentifier}/track?${params.toString()}`);
     }
 }
 
