@@ -1,5 +1,6 @@
 import {AbstractAPI} from './AbstractAPI.ts';
 import type {WebSiteFile} from '../models';
+import {encodeApiPath} from '../tools/safePaths';
 
 class FileAPI extends AbstractAPI {
     async getFiles() {
@@ -12,12 +13,16 @@ class FileAPI extends AbstractAPI {
 
     getFileUrl(filePath: string): string {
         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-        return `${API_BASE_URL}/file/${filePath}`;
+        const safePath = encodeApiPath(filePath);
+        return safePath ? `${API_BASE_URL}/file/${safePath}` : '';
     }
 
     getFileThumbUrl(mainPath: string): string {
         // Replace the last occurrence of '/' with '/.thumb/'
         const lastSlashIndex = mainPath.lastIndexOf('/');
+        if (lastSlashIndex < 0 || !mainPath) {
+            return '';
+        }
         return `${mainPath.substring(0, lastSlashIndex)}/.thumb/${mainPath.substring(lastSlashIndex + 1)}`;
     }
 }
