@@ -28,7 +28,7 @@
     "@ant-design/icons": "^6.3.4",
     "@vempain/vempain-auth-frontend": "^2.0.6",
     "@vempain/vempain-rt-renderer": "1.0.21",
-    "antd": "^6.6.4",
+    "antd": "^6.6.5",
     "axios": "^1.20.0",
     "dayjs": "^1.11.23",
     "leaflet": "^1.9.4",
@@ -55,9 +55,9 @@
     "globals": "^17.12.0",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
-    "ts-jest": "^29.4.12",
+    "ts-jest": "^29.4.13",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "typescript-eslint": "^8.70.0",
+    "typescript-eslint": "^8.70.1",
     "vite": "^8.3.0"
   },
   "jest": {
