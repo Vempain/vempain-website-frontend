@@ -10,7 +10,7 @@
     "node": ">=18.0.0",
     "yarn": ">=4.0.0"
   },
-  "packageManager": "yarn@4.18.0",
+  "packageManager": "yarn@4.18.1",
   "scripts": {
     "prebuild": "node generateBuildInfo.js",
     "start": "env-cmd -f .env.local vite",
@@ -26,8 +26,8 @@
   "dependencies": {
     "@ant-design/charts": "^2.6.7",
     "@ant-design/icons": "^6.3.4",
-    "@vempain/vempain-auth-frontend": "^2.0.6",
-    "@vempain/vempain-rt-renderer": "1.0.21",
+    "@vempain/vempain-auth-frontend": "^2.0.13",
+    "@vempain/vempain-rt-renderer": "1.0.22",
     "antd": "^6.6.5",
     "axios": "^1.20.0",
     "dayjs": "^1.11.23",
@@ -42,7 +42,7 @@
     "@eslint/js": "^10.0.1",
     "@types/jest": "^30.0.0",
     "@types/leaflet": "^1.9.22",
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@typescript/native": "npm:typescript@^7.0.2",
@@ -55,10 +55,10 @@
     "globals": "^17.12.0",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
-    "ts-jest": "^29.4.13",
+    "ts-jest": "^29.4.14",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.70.1",
-    "vite": "^8.3.0"
+    "vite": "^8.3.1"
   },
   "jest": {
     "preset": "ts-jest/presets/js-with-ts",
