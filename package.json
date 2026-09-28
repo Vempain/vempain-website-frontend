@@ -26,7 +26,7 @@
   "dependencies": {
     "@ant-design/charts": "^2.6.7",
     "@ant-design/icons": "^6.3.4",
-    "@vempain/vempain-auth-frontend": "^2.0.13",
+    "@vempain/vempain-auth-frontend": "^2.0.14",
     "@vempain/vempain-rt-renderer": "1.0.22",
     "antd": "^6.6.5",
     "axios": "^1.20.0",
