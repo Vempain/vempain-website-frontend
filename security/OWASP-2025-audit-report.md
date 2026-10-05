@@ -20,11 +20,9 @@ secret scanner is configured, so dependency scanning remains a recommended CI co
 
 An anonymous browser can request public pages, galleries, search data and files. An authenticated browser can request
 ACL-protected content and location metadata. A stolen browser token is replayable until the backend expires/revokes it;
-the frontend clears it on 401 and logout, but cannot invalidate a stateless token itself. The replacement Spring website
-backend and legacy PHP implementation are separate trust boundaries: this report does not claim that frontend controls
+the frontend clears it on 401 and logout, but cannot invalidate a stateless token itself. The Spring website backend is a separate trust boundary: this report does not claim that frontend controls
 replace backend ACL, path containment, cookie, CSRF, rate-limit, or error controls. `/api`, `/file`, `/health`, and
-page routing must be verified against both implementations during migration. Legacy PHP deployment status is not
-discoverable from this repository and is therefore **UNVERIFIED**; confirm the active ingress before decommissioning it.
+page routing must be verified against the current backend and active ingress.
 
 ## Findings remediated
 
@@ -77,7 +75,6 @@ backend audit should reference this report when documenting `/api` and `/file` p
 ## Accepted/deferred risks
 
 The frontend cannot enforce ACLs, invalidate stateless JWTs, add rate limiting, or guarantee secure cookie flags.
-`localStorage` token compatibility and unknown legacy PHP deployment status are explicit migration residuals, not
-resolved by React changes. Before cutover, probe both backend implementations and the real reverse proxy for
-anonymous/invalid/authorized requests, malformed paths, `/health`, headers, error bodies, logout replay, and file
-containment.
+`localStorage` token compatibility and backend deployment behavior are explicit integration residuals, not resolved by
+React changes. Probe the current backend and real reverse proxy for anonymous/invalid/authorized requests, malformed
+paths, `/health`, headers, error bodies, logout replay, and file containment.
