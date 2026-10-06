@@ -5,5 +5,6 @@ export interface WebSiteGallery {
     gallery_id: number;
     shortname: string | null;
     description: string | null;
+    acl_id?: number | null;
     subjects: WebSiteSubject[];
 }

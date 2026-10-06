@@ -7,6 +7,7 @@ export interface WebSiteFile {
     acl_id: number | null;
     comment?: string | null;
     file_path: string;
+    thumbnail_path?: string | null;
     mimetype: string;
     original_date_time: string | null;
     rights_holder?: string | null;
