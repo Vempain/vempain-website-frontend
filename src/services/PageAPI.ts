@@ -21,6 +21,7 @@ export interface LastItemsResponseItem {
     title: string;
     published: string | null;
     file_path?: string | null;
+    thumbnail_path?: string | null;
     gallery_id?: number | null;
     header?: string | null;
     body?: string | null;
