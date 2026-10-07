@@ -1,7 +1,9 @@
 export {BottomFooter} from './BottomFooter';
 export {GalleryBlock} from './GalleryBlock';
+export {GALLERY_GRID_STYLE} from './GalleryBlockStyles';
 export {GalleryLoader} from './GalleryLoader';
 export {MetadataOverlay} from './MetadataOverlay.tsx';
+export type {MetadataOverlayPage, MetadataOverlayProps} from './MetadataOverlay.tsx';
 export {ShowSubjects} from './ShowSubjects';
 export {SubjectSearchLoader} from './SubjectSearchLoader';
 export {default as PageView} from './PageView';
