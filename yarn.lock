@@ -4654,9 +4654,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.439":
-  version: 1.5.445
-  resolution: "electron-to-chromium@npm:1.5.445"
-  checksum: 10c0/cba5dc14ca1df60596cb228d4906ddd2c55a820517a1e33d36a13b6526f20b9990645baa89c5a1345fe31adb5f5c4082b3f54ab98d4fe3d54376fb105e6abde3
+  version: 1.5.448
+  resolution: "electron-to-chromium@npm:1.5.448"
+  checksum: 10c0/c7782e7ee445115fb549b2a5e9b4a453ae0c81db26a6aaf8674eed21bcfaddc34e6e624cbe40f8f1b498197301903bd3a81b9881be793755ff39eb46022aa471
   languageName: node
   linkType: hard
 
@@ -6952,11 +6952,11 @@ __metadata:
   linkType: hard
 
 "player.style@npm:^0.3.0":
-  version: 0.3.4
-  resolution: "player.style@npm:0.3.4"
+  version: 0.3.5
+  resolution: "player.style@npm:0.3.5"
   dependencies:
     media-chrome: "npm:~4.19.0"
-  checksum: 10c0/9e598ca62ea6f0c61c2ebb3f9b03f14943eb83e9f87e9d7f1211767b5845d8515065c798801af3ecb0b9a0afc6660b6563f7877ee90082f8bdef0c57caab3ca6
+  checksum: 10c0/2b30e96629191dcf8faf2b95f4fde6717807abcdbfc5cf04f0e496e90089126f9884b4ff944fc405393356f369ce6f6479e687bf9b66b205af44b21602b5c664
   languageName: node
   linkType: hard
 
