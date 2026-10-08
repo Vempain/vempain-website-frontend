@@ -33,7 +33,7 @@ identifiers were similarly interpolated by `PageAPI`. Malformed values containin
 cause requests outside the intended client-side namespace and made backend path-traversal mistakes easier to reach.
 `src/tools/safePaths.ts` now rejects control characters, backslashes and `.`/`..` segments and percent-encodes every
 path segment. `FileAPI` fails closed for invalid paths; `PageAPI` rejects invalid embed identifiers/cluster keys.
-Regression coverage: `src/services/FileAPISecurity.test.ts`.
+Regression coverage: `src/__tests__/services/FileAPISecurity.test.ts`.
 
 ### F-02 — MEDIUM: static delivery lacked browser hardening headers
 
