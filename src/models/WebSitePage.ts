@@ -1,6 +1,5 @@
 import type {WebSiteSubject} from "./WebSiteSubject";
 import type {PageEmbed} from "./PageEmbed.ts";
-import type {WebSiteStyle} from "./WebSiteStyle.ts";
 
 export interface WebSitePage {
     id: number;
@@ -10,7 +9,8 @@ export interface WebSitePage {
     file_path?: string;
     header: string;
     body: string;
-    page_style: WebSiteStyle | null;
+    /** Raw page specific style text as published by the admin backend */
+    page_style: string | null;
     secure: boolean;
     acl_id: number | null;
     creator: string;

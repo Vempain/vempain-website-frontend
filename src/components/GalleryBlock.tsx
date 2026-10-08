@@ -1,21 +1,25 @@
 import {Button, Card, Empty, Image, Spin, Tooltip, Typography} from "antd";
-import {ShowSubjects} from "./ShowSubjects.tsx";
+import dayjs from "dayjs";
+import {ShowSubjects} from "./ShowSubjects";
 import {fileAPI} from "../services";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import type {MetadataEntry, WebSiteFile, WebSiteLocation, WebSiteSubject} from "../models";
-import {MetadataOverlay} from "./MetadataOverlay.tsx";
+import {MetadataOverlay, type MetadataOverlayPage} from "./MetadataOverlay";
+import {cameraMetadataEntries} from "../tools";
 import {LocationBadge} from "./LocationBadge";
 import {LocationModal} from "./LocationModal";
+import {GALLERY_GRID_STYLE} from "./GalleryBlockStyles";
 
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 166;
 const THUMB_TOOLTIP_MAX_WIDTH = 500;
 const THUMB_TOOLTIP_MAX_HEIGHT = 400;
-const MAX_COLUMNS = 5;
+const DISPLAY_DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
+/** Thumbnails fill their grid cell and keep the thumbnail aspect ratio instead of a fixed pixel size. */
 const THUMBNAIL_FRAME_STYLE = {
-    width: THUMB_WIDTH,
-    height: THUMB_HEIGHT,
+    width: '100%',
+    aspectRatio: `${THUMB_WIDTH} / ${THUMB_HEIGHT}`,
     overflow: 'hidden',
     borderRadius: 4,
     background: '#000',
@@ -23,8 +27,8 @@ const THUMBNAIL_FRAME_STYLE = {
 };
 
 const THUMBNAIL_IMAGE_STYLE = {
-    width: THUMB_WIDTH,
-    height: THUMB_HEIGHT,
+    width: '100%',
+    height: '100%',
     objectFit: 'cover' as const,
     objectPosition: 'center' as const,
     display: 'block',
@@ -64,11 +68,6 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
 
     // Memos
     const activeFile = useMemo(() => previewVisible ? siteFileList[previewIndex] ?? null : null, [siteFileList, previewIndex, previewVisible]);
-    const columnsStyle = useMemo(() => ({
-        display: 'grid',
-        gridTemplateColumns: `repeat(${MAX_COLUMNS}, minmax(${THUMB_WIDTH}px, 1fr))`,
-        gap: 12,
-    }), []);
 
     const metadataEntries = useMemo<MetadataEntry[]>(() => {
         if (!activeFile) {
@@ -79,7 +78,9 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
             {label: 'Kommentti', value: activeFile.comment},
             {
                 label: 'Kuvausaika',
-                value: (activeFile.original_date_time ?? ""),
+                value: activeFile.original_date_time
+                        ? dayjs(activeFile.original_date_time).format(DISPLAY_DATE_TIME_FORMAT)
+                        : "",
             },
             {label: 'Oikeuksien haltija', value: activeFile.rights_holder},
             {label: 'Käyttöehdot', value: activeFile.rights_terms},
@@ -98,6 +99,18 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
             return [{label: entry.label, value: normalized}];
         });
     }, [activeFile]);
+
+    // Overlay pages: general details (with the subjects) and the camera specific values from the image metadata
+    const overlayPages = useMemo<MetadataOverlayPage[]>(() => {
+        if (!activeFile) {
+            return [];
+        }
+        return [
+            {key: 'details', title: 'Lisätiedot', entries: metadataEntries, subjects: activeFile.subjects ?? []},
+            {key: 'camera', title: 'Kamera', entries: cameraMetadataEntries(activeFile.metadata)},
+        ].filter((page) => page.entries.length > 0 || (page.subjects?.length ?? 0) > 0);
+    }, [activeFile, metadataEntries]);
+    const hasOverlayContent = overlayPages.length > 0;
 
     // Prefetch next page when near the end of the current set
     useEffect(() => {
@@ -134,7 +147,7 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
                                         countRender: (current, total) => `${current + 1} / ${totalFiles ?? total}`,
                                         actionsRender: (original) => (
                                                 <>
-                                                    {(metadataEntries.length > 0 || (activeFile?.subjects?.length ?? 0) > 0) && (
+                                                    {hasOverlayContent && (
                                                             <Button
                                                                     size="small"
                                                                     type="primary"
@@ -152,7 +165,7 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
                                         ),
                                     }}
                             >
-                                <div style={columnsStyle}>
+                                <div style={GALLERY_GRID_STYLE} data-testid="gallery-grid">
                                     {siteFileList.map((siteFile, idx) => {
                                         const filePath = siteFile.file_path;
                                         if (!filePath) {
@@ -218,8 +231,8 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
                             </div>
                     )}
                 </div>
-                {previewVisible && showMetadata && (metadataEntries.length > 0 || (activeFile?.subjects?.length ?? 0) > 0) && (
-                        <MetadataOverlay entries={metadataEntries} subjects={activeFile?.subjects}/>
+                {previewVisible && showMetadata && hasOverlayContent && (
+                        <MetadataOverlay pages={overlayPages}/>
                 )}
                 {selectedLocation && (
                         <LocationModal
