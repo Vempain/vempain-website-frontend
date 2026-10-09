@@ -3476,27 +3476,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vempain/vempain-auth-frontend@npm:^2.0.17":
-  version: 2.0.17
-  resolution: "@vempain/vempain-auth-frontend@npm:2.0.17::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40vempain%2Fvempain-auth-frontend%2F2.0.17%2F9ea757b1ae0235542b93f40139815fee8232d4bd"
+"@vempain/vempain-auth-frontend@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@vempain/vempain-auth-frontend@npm:2.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40vempain%2Fvempain-auth-frontend%2F2.1.0%2F81474333aefedca291990b4e2b8d6a9c8dc9de0f"
   dependencies:
     "@ant-design/icons": "npm:^6.3.4"
     antd: "npm:^6.6.5"
     dayjs: "npm:^1.11.23"
     i18next: "npm:^26.4.2"
-    react-i18next: "npm:^17.0.15"
+    react-i18next: "npm:^17.0.16"
   peerDependencies:
     axios: 1.20.0
     react: ^19.2.5
     react-dom: ^19.2.5
     react-router-dom: ^7.14.1
-  checksum: 10c0/93b34453e033ca166775021803806f0e970da1a592d110c685b497fd23e267291898f2a254b5db938c01c58c7d3ab67bf2a5334bf5ff3c6843cc26a6f03a8844
+  checksum: 10c0/d77a4eafe339e5134a3495578d406d1a2f39a7758e8a9f84645b5aa9c7343015cddc342905070bcfe08daf1429d8a143ba49caf1edd04c36050a8edc55e3f710
   languageName: node
   linkType: hard
 
-"@vempain/vempain-rt-renderer@npm:1.0.25":
-  version: 1.0.25
-  resolution: "@vempain/vempain-rt-renderer@npm:1.0.25::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40vempain%2Fvempain-rt-renderer%2F1.0.25%2F7ae677a98637298403a0b6fd2b62dd4310c24bd8"
+"@vempain/vempain-rt-renderer@npm:1.0.26":
+  version: 1.0.26
+  resolution: "@vempain/vempain-rt-renderer@npm:1.0.26::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40vempain%2Fvempain-rt-renderer%2F1.0.26%2F26486c5b76470ce898af0d2752379c756486eb34"
   peerDependencies:
     "@ant-design/charts": ^2.6.5
     antd: ^6.4.3
@@ -3506,7 +3506,7 @@ __metadata:
     react-leaflet: ^5.0.0
     react-player: ^3.4.0
     react-router-dom: ^7.15.1
-  checksum: 10c0/567f3f76359021ce9b4752095ea8328219f65a731e800871087d60786d47b3bfddf7abaffdfd79d69e9c291be44224f1b4869ab211ac24831f38e8b52ffaf248
+  checksum: 10c0/d13d7e8641b6190ce4fc2259b0f0994cba97ac4a6b5bd829538a3505ba3cf6be2ee2854044a2305502f02c9c7fd83250d5a5cff1634c5bb38e3e1a37d0418180
   languageName: node
   linkType: hard
 
@@ -3523,8 +3523,8 @@ __metadata:
     "@types/react": "npm:^19.3.0"
     "@types/react-dom": "npm:^19.3.0"
     "@typescript/native": "npm:typescript@^7.0.2"
-    "@vempain/vempain-auth-frontend": "npm:^2.0.17"
-    "@vempain/vempain-rt-renderer": "npm:1.0.25"
+    "@vempain/vempain-auth-frontend": "npm:^2.1.0"
+    "@vempain/vempain-rt-renderer": "npm:1.0.26"
     "@vitejs/plugin-react": "npm:^6.1.2"
     antd: "npm:^6.6.5"
     axios: "npm:^1.20.0"
@@ -3546,7 +3546,7 @@ __metadata:
     ts-jest: "npm:^29.4.14"
     typescript: "npm:@typescript/typescript6@^6.0.2"
     typescript-eslint: "npm:^8.71.1"
-    vite: "npm:^8.3.3"
+    vite: "npm:^8.3.4"
   languageName: unknown
   linkType: soft
 
@@ -4654,9 +4654,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.439":
-  version: 1.5.450
-  resolution: "electron-to-chromium@npm:1.5.450"
-  checksum: 10c0/7272e0d354021c9482757f9bdd6f55dbeaee196546d3bb5c1cc2b16798ce053556a8dac704e9ae074082591473b81021cbbdedcbb5818af62d7fe0279e514f12
+  version: 1.5.451
+  resolution: "electron-to-chromium@npm:1.5.451"
+  checksum: 10c0/6946102cbe8d75fe6ea5f442516f2e12bc1c7f218d90c827ceb0178a2a8ce2b548c9e3c12d7c82a2c24b7408d2b3490e6b2c15f5126d2aa0420cde483d84fcc0
   languageName: node
   linkType: hard
 
@@ -6725,9 +6725,9 @@ __metadata:
   linkType: hard
 
 "node-releases@npm:^2.0.57":
-  version: 2.0.57
-  resolution: "node-releases@npm:2.0.57"
-  checksum: 10c0/fe5b68fba1fef524243b54828a118f13a4a40db08bb42c0b92680c3ca5c246f4ae6f139515071d46b9a3a9195945f5ac78064f5b7674c4dcc3dd6bfe933ff9e8
+  version: 2.0.58
+  resolution: "node-releases@npm:2.0.58"
+  checksum: 10c0/aeb21a36f273d2294a97bb09d536c8b2c42b56ad309524ff940735d29fc658dd58c29700602ae502ebd16a8fd6ecda31fcec0243bc7480b5bbd991bf9ff113d5
   languageName: node
   linkType: hard
 
@@ -6967,7 +6967,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.5.28":
+"postcss@npm:^8.5.29":
   version: 8.5.29
   resolution: "postcss@npm:8.5.29"
   dependencies:
@@ -7056,7 +7056,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^17.0.15":
+"react-i18next@npm:^17.0.16":
   version: 17.0.16
   resolution: "react-i18next@npm:17.0.16"
   dependencies:
@@ -7178,7 +7178,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rolldown@npm:~1.2.11":
+"rolldown@npm:~1.2.12":
   version: 1.2.13
   resolution: "rolldown@npm:1.2.13"
   dependencies:
@@ -7884,8 +7884,8 @@ __metadata:
   linkType: hard
 
 "update-browserslist-db@npm:^1.3.3":
-  version: 1.3.3
-  resolution: "update-browserslist-db@npm:1.3.3"
+  version: 1.3.4
+  resolution: "update-browserslist-db@npm:1.3.4"
   dependencies:
     escalade: "npm:^3.2.0"
     picocolors: "npm:^1.1.1"
@@ -7893,7 +7893,7 @@ __metadata:
     browserslist: ">= 4.21.0"
   bin:
     update-browserslist-db: cli.js
-  checksum: 10c0/07bab166c18f47ba51f3b755e42f109ef5069d0d7c7224887decbd523d5ccd404f63661ebd5a740099972ed47f41f0e28c04df8be31d76716a346f948ce2aa61
+  checksum: 10c0/5c0769472715b57371208c3146cc07a4f0917c1d18cc34f60325bc4234f4a28f332e50b99f675999ff311315231ff19beb22a815dfe04ccc1e798e1d389514d7
   languageName: node
   linkType: hard
 
@@ -7945,15 +7945,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^8.3.3":
-  version: 8.3.3
-  resolution: "vite@npm:8.3.3"
+"vite@npm:^8.3.4":
+  version: 8.3.4
+  resolution: "vite@npm:8.3.4"
   dependencies:
     fsevents: "npm:~2.3.3"
     lightningcss: "npm:^1.33.0"
     picomatch: "npm:^4.0.7"
-    postcss: "npm:^8.5.28"
-    rolldown: "npm:~1.2.11"
+    postcss: "npm:^8.5.29"
+    rolldown: "npm:~1.2.12"
     tinyglobby: "npm:^0.2.17"
   peerDependencies:
     "@types/node": ^20.19.0 || >=22.12.0
@@ -7998,7 +7998,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/a1fa945ad1dd98d43e45d491eee11505083b19e00f8c5549cd0771273717f7bdb431eef71ef3568d1effa6ba63719811e5151f3fbec84be5a017d4975470a0d9
+  checksum: 10c0/63d7351fa21580fb646f0b594c64e97a56cdf15c55a57372a7adefe6287995fa7384cb5ddca14695ff7dca738ba00e0a3352fc24df711d9c501c5576f40f0867
   languageName: node
   linkType: hard
 
