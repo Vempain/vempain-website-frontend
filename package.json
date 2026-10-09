@@ -26,8 +26,8 @@
   "dependencies": {
     "@ant-design/charts": "^2.6.7",
     "@ant-design/icons": "^6.3.4",
-    "@vempain/vempain-auth-frontend" : "^2.0.17",
-    "@vempain/vempain-rt-renderer" : "1.0.25",
+    "@vempain/vempain-auth-frontend" : "^2.1.0",
+    "@vempain/vempain-rt-renderer" : "1.0.26",
     "antd": "^6.6.5",
     "axios": "^1.20.0",
     "dayjs": "^1.11.23",
@@ -58,7 +58,7 @@
     "ts-jest": "^29.4.14",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint" : "^8.71.1",
-    "vite" : "^8.3.3"
+    "vite" : "^8.3.4"
   },
   "jest": {
     "preset": "ts-jest/presets/js-with-ts",
