@@ -29,4 +29,12 @@ export default [
             ],
         },
     },
+    {
+        // Jest mocks and the custom ts-jest transformer are CommonJS test infrastructure, not shipped components.
+        files: ['__mocks__/**', 'jest/**'],
+        rules: {
+            '@typescript-eslint/no-require-imports': 'off',
+            'react-refresh/only-export-components': 'off',
+        },
+    },
 ]

@@ -19,7 +19,8 @@
 | `src/models/`     | TS models mirroring the backend DTOs                                                               |
 | `src/tools/`      | `routes.ts` (frontend/backend page-path helpers), `safePaths.ts`, `geo.ts`, `deepMerge.ts`         |
 | `src/__tests__/`  | Jest tests (`*.test.ts(x)`), mirroring the `src/` structure                                        |
-| `__mocks__/`      | Jest mocks (assets, styles, `react-player`)                                                        |
+| `__mocks__/`      | Jest mocks (assets, styles, services, icons, `react-leaflet`, the renderer, `react-player`)        |
+| `jest/`           | Custom `ts-jest` transformer that makes `import.meta.env` usable in CommonJS test runs             |
 
 ## Conventions
 
@@ -50,8 +51,11 @@
 - Use the checked-in Yarn 4 release (`.yarn/releases`, `yarnPath` in `.yarnrc.yml`); `@vempain/*` packages resolve from GitHub Packages with
   `VEMPAIN_ACTION_TOKEN`.
 - Tests are Jest (`ts-jest`, jsdom, `src/setupTests.ts`) and live in `src/__tests__/` only, mirroring the `src/` layout. Component tests render
-  with `react-dom/client` and `act` from `react` and mock Ant Design where needed; there is no testing-library dependency. Style-contract tests
-  read the CSS/TS sources with `fs` (`AppLayout.test.ts`, `services/ApiSnakeCaseContract.test.ts`).
+  with `react-dom/client` and `act` from `react`; there is no testing-library dependency. Style-contract tests read the CSS/TS sources with `fs`
+  (`AppLayout.test.ts`, `services/ApiSnakeCaseContract.test.ts`).
+- Coverage is enforced: `collectCoverageFrom` in the `jest` block covers all of `src/` except `models/`, `services/`, `main.tsx`, `setupTests.ts`
+  and the test sources, and `coverageThreshold` fails the run below 95% statements/branches/functions/lines. New components, routes, contexts and
+  tools need tests in the same commit.
 - Run after changes affecting behavior, routing, APIs, authentication or deployment:
 
 ```bash
@@ -64,6 +68,21 @@ yarn build:production
 - CI uses the reusable `frontend-spa.yaml` workflow from `vempain-workflows`. Do not commit `dist/`, `coverage/`, `node_modules/` or local `.env` files.
 - Security findings and their mitigations are recorded in `security/OWASP-2025-audit-report.md`; keep it current when changing sanitization,
   URL building or authentication handling.
+
+### Test harness
+
+The `jest` block of `package.json` papers over the gap between the Vite/ESM build and the CommonJS test compiler. Know these before writing a test:
+
+| Mechanism                                                       | Effect                                                                                                     |
+|-----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| `jest/tsJestImportMetaTransformer.cjs`                          | Rewrites `import.meta.env` in non-test sources to the `__VITE_ENV__` global that `src/setupTests.ts` seeds |
+| `^(\.{1,2}/)+services$`                                         | Every relative `.../services` import resolves to the `jest.fn()` stubs in `__mocks__/servicesMock.ts`      |
+| `^antd/es/(.*)$` to `antd/lib/$1`                               | Ant Design renders for real; mock `antd` per test only when a component cannot be driven otherwise         |
+| `@ant-design/icons`                                             | Proxy mock returning an empty component for any icon name, so icons never need mocking                     |
+| `react-leaflet`, `@vempain/vempain-rt-renderer`, `react-player` | ESM-only packages replaced by stubs in `__mocks__/`                                                        |
+
+`src/setupTests.ts` also sets `IS_REACT_ACT_ENVIRONMENT`, a `window.matchMedia` stub and `TextEncoder`/`TextDecoder`. `tsconfig.test.json` adds
+`vite/client` types, `allowJs` and `resolveJsonModule` on top of `tsconfig.app.json`.
 
 ## Tag ACL rule
 

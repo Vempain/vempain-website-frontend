@@ -3,12 +3,15 @@
   "compilerOptions" : {
     "types" : [
       "jest",
-      "node"
+      "node",
+      "vite/client"
     ],
+    "allowJs" : true,
     "verbatimModuleSyntax" : false,
     "allowImportingTsExtensions" : false,
     "module" : "CommonJS",
-    "moduleResolution" : "node"
+    "moduleResolution" : "node",
+    "resolveJsonModule" : true
   },
   "include" : [
     "src/**/*.test.ts",

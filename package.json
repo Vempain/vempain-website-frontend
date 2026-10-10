@@ -66,16 +66,36 @@
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupTests.ts"
     ],
+    "collectCoverageFrom" : [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/main.tsx",
+      "!src/setupTests.ts",
+      "!src/models/**",
+      "!src/services/**",
+      "!src/__tests__/**"
+    ],
+    "coverageThreshold" : {
+      "global" : {
+        "statements" : 85,
+        "branches" : 75,
+        "functions" : 80,
+        "lines" : 85
+      }
+    },
     "moduleNameMapper": {
       "^react-player$": "<rootDir>/__mocks__/reactPlayerMock.js",
-      "^@ant-design/icons$" : "<rootDir>/__mocks__/antdIconsMock.tsx",
-      "^\\.\\./services$" : "<rootDir>/__mocks__/servicesMock.ts",
-      "\\\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
-      "\\\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+      "^react-leaflet$" : "<rootDir>/__mocks__/reactLeafletMock.tsx",
+      "^@vempain/vempain-rt-renderer$" : "<rootDir>/__mocks__/rtRendererMock.tsx",
+      "^antd/es/(.*)$" : "antd/lib/$1",
+      "^@ant-design/icons$" : "<rootDir>/__mocks__/antdIconsMock.js",
+      "^(\\.{1,2}/)+services$" : "<rootDir>/__mocks__/servicesMock.ts",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$" : "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$" : "<rootDir>/__mocks__/styleMock.js"
     },
     "transform": {
-      "^.+\\.tsx?$": [
-        "ts-jest",
+      "^.+\\.[tj]sx?$" : [
+        "<rootDir>/jest/tsJestImportMetaTransformer.cjs",
         {
           "tsconfig": "tsconfig.test.json"
         }

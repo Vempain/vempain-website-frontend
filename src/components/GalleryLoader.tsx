@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import type {WebSiteFile} from '../models';
 import {galleryAPI} from '../services';
 import {Spin} from "antd";
-import {GalleryBlock} from "./GalleryBlock.tsx";
+import {GalleryBlock} from "./GalleryBlock";
 import {useAuth} from "../context/AuthContextInstance";
 
 interface GalleryLoaderProps {
