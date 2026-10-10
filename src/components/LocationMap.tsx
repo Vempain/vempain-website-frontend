@@ -43,7 +43,7 @@ export default function LocationMap({location, zoom = 15, compass}: LocationMapP
                 />
                 <Marker position={position}>
                     <Popup>
-                        <Space direction={"vertical"} size={4} style={{width: '100%'}}>
+                        <Space orientation="vertical" size={4} style={{width: '100%'}}>
                             {location.altitude != null && (
                                     <Typography.Text>Altitude: {location.altitude} m</Typography.Text>
                             )}
