@@ -13,4 +13,13 @@ describe('application layout', () => {
         expect(appCss).toMatch(/\.app-main\s*\{[^}]*min-width:\s*0/s);
         expect(appCss).toMatch(/\.app-content\s*\{[^}]*min-width:\s*0/s);
     });
+
+    it('keeps the sidebar and main content in independent scroll containers', () => {
+        const appCss = fs.readFileSync(path.join(process.cwd(), 'src/App.css'), 'utf8');
+
+        expect(appCss).toMatch(/\.app-layout\s*\{[^}]*height:\s*100vh[^}]*overflow:\s*hidden/s);
+        expect(appCss).toMatch(/\.app-main\s*\{[^}]*height:\s*calc\(100vh\s*-\s*64px\)[^}]*overflow:\s*hidden/s);
+        expect(appCss).toMatch(/\.app-sider\s*\{[^}]*overflow-y:\s*auto/s);
+        expect(appCss).toMatch(/\.app-content\s*\{[^}]*height:\s*calc\(100%\s*-\s*48px\)[^}]*overflow-y:\s*auto/s);
+    });
 });
