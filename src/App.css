@@ -11,15 +11,19 @@ body, html {
 }
 
 .app-layout {
+    height: 100vh;
     min-height: 100vh;
     width: 100%;
+    overflow: hidden;
 }
 
 .app-main {
     display: flex;
     margin-top: 64px;
+    height: calc(100vh - 64px);
     min-height: calc(100vh - 64px);
     min-width: 0;
+    overflow: hidden;
 }
 
 .app-sider .logo {
@@ -37,6 +41,9 @@ body, html {
 
 .app-sider {
     background: var(--color-primary, #9090FF) !important;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .sidebar-header {
@@ -100,10 +107,13 @@ body, html {
 }
 
 .app-content {
+    box-sizing: border-box;
     margin: 24px;
     padding: 24px;
     background: var(--color-surface, #fff);
+    height: calc(100% - 48px);
     min-height: calc(100vh - 112px);
+    overflow-y: auto;
     border-radius: 12px;
     flex: 1;
     width: auto;
