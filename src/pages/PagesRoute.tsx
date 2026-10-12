@@ -4,8 +4,9 @@ import {useParams} from 'react-router-dom';
 import PageView from '../components/PageView';
 import {type PageCardItem, PageCardsGrid} from '../components/PageCardsGrid';
 import type {WebSitePage} from '../models';
+import {useOpenGraph} from '../context';
 import {pageAPI} from '../services';
-import {toBackendPagePath, trimSlashes} from '../tools';
+import {pageOpenGraph, toBackendPagePath, trimSlashes} from '../tools';
 
 const {Paragraph, Title} = Typography;
 
@@ -21,6 +22,7 @@ export function PagesRoute() {
     const {'*': pagePathParam} = useParams();
     const routePath = pagePathParam && pagePathParam.trim() !== '' ? pagePathParam : 'index';
     const backendPath = toBackendPagePath(routePath);
+    const {setRouteOpenGraph} = useOpenGraph();
 
     const [result, setResult] = useState<RouteLoadResult | null>(null);
 
@@ -75,6 +77,16 @@ export function PagesRoute() {
     }, [backendPath]);
 
     const loading = result === null || result.routeKey !== backendPath;
+
+    // Publish the page's Open Graph metadata to the <head> once the page for the current route has loaded; a page from an older
+    // backend without open_graph gets metadata derived from its title and header.
+    useEffect(() => {
+        if (result === null || result.routeKey !== backendPath) {
+            return;
+        }
+        const page = result.pageContent;
+        setRouteOpenGraph(page ? page.open_graph ?? pageOpenGraph(page) : null);
+    }, [result, backendPath, setRouteOpenGraph]);
     const fallbackItems = useMemo<PageCardItem[]>(
             () => (result?.fallbackPages ?? []).map((page) => ({
                 id: page.id,

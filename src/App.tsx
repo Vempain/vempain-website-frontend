@@ -1,6 +1,6 @@
 import {Button, ConfigProvider, Form, Input, Layout, message, Modal, Select, Space, Tabs, Typography} from 'antd';
 import './App.css';
-import {useAuth, useTheme} from './context';
+import {OpenGraphProvider, useAuth, useTheme} from './context';
 import {BottomFooter, SideBar, TopBar} from './components';
 import type {WebSitePageDirectory, WebSiteSubject} from './models';
 import {pageAPI, subjectSearchAPI, webSiteConfigurationAPI} from './services';
@@ -130,6 +130,7 @@ function App() {
 
     return (
             <ConfigProvider theme={antdTheme}>
+                <OpenGraphProvider siteName={siteConfig.name} siteDescription={siteConfig.description}>
                 <Layout className="app-layout">
                     <TopBar
                             selectedDirectory={selectedDirectory}
@@ -235,6 +236,7 @@ function App() {
                         />
                     </Modal>
                 </Layout>
+                </OpenGraphProvider>
             </ConfigProvider>
     );
 }

@@ -1,5 +1,6 @@
 import type {WebSiteSubject} from "./WebSiteSubject";
 import type {PageEmbed} from "./PageEmbed.ts";
+import type {OpenGraph} from "./OpenGraph.ts";
 
 export interface WebSitePage {
     id: number;
@@ -20,4 +21,6 @@ export interface WebSitePage {
     published?: string | null;
     embeds?: PageEmbed[];
     subjects?: WebSiteSubject[];
+    /** Open Graph metadata; set by the single page endpoints, absent in listings */
+    open_graph?: OpenGraph | null;
 }

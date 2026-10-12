@@ -1,6 +1,7 @@
 export type {ApiResponse} from './ApiResponse.ts';
 export type {DirectoryNode} from './DirectoryNode.ts';
 export type {MetadataEntry} from './MetadataEntry.ts';
+export type {OpenGraph} from './OpenGraph.ts';
 export type {PageEmbed, EmbedItem, LastEmbedType, HeroEmbedType, HeroTransition} from './PageEmbed.ts';
 export type {
     GpsBounds,
