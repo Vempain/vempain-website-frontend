@@ -1,0 +1,75 @@
+# Rendered to /etc/nginx/conf.d/default.conf when the container starts; only ${VEMPAIN_...} placeholders are substituted
+# (NGINX_ENVSUBST_FILTER in the Dockerfile), nginx variables such as $uri are left alone.
+
+# Scheme of the original request: behind a TLS-terminating proxy (Traefik) the proxy's X-Forwarded-Proto, otherwise the scheme nginx
+# saw. Only http and https are accepted, so the header cannot inject anything into the URLs of the crawler document.
+map $http_x_forwarded_proto $vempain_scheme {
+    default $scheme;
+    http    http;
+    https   https;
+}
+
+# Link-preview crawlers do not run the single-page application, so they are served the Open Graph document of the route by the
+# website backend instead (see location / below). Search engines are deliberately not listed: they render JavaScript and must index
+# the real pages.
+map $http_user_agent $vempain_link_preview {
+    default 0;
+    ~*(facebookexternalhit|facebookcatalog|Facebot|Twitterbot|LinkedInBot|Slackbot|Discordbot|TelegramBot|WhatsApp|Pinterestbot|Mastodon|Bluesky|redditbot|SkypeUriPreview|Embedly|Iframely|vkShare|XING-contenttabreceiver) 1;
+}
+
+# The website backend, as host:port. An upstream is resolved when nginx starts; a host name written directly into proxy_pass together
+# with a variable would need a runtime resolver.
+upstream vempain_website_backend {
+    server ${VEMPAIN_BACKEND_ADDRESS};
+}
+
+server {
+    listen 80;
+    server_name localhost;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+
+    # Serve /files from mounted volume
+    location /files/ {
+        alias /files/;
+        autoindex off;
+    }
+
+    # Built assets are served to everyone as they are.
+    location /assets/ {
+        try_files $uri =404;
+    }
+
+    # SPA fallback. A link-preview crawler is proxied to the website backend, which answers with a small HTML document carrying the
+    # Open Graph tags of the route (GET /api/public/open-graph/<route>). The proxy passes the public origin of the site for the
+    # absolute URLs and drops credentials, so the document never describes restricted content.
+    location / {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Vempain-Origin "$vempain_scheme://$http_host";
+        proxy_set_header Accept "text/html";
+        proxy_set_header Cookie "";
+        proxy_set_header Authorization "";
+        if ($vempain_link_preview) {
+            proxy_pass http://vempain_website_backend/api/public/open-graph$request_uri;
+        }
+        try_files $uri $uri/ /index.html;
+    }
+
+    location = /index.html {
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options "DENY" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+        add_header Cache-Control "no-store" always;
+        try_files $uri =404;
+    }
+
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+}

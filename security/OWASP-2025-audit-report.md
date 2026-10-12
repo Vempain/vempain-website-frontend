@@ -42,6 +42,18 @@ Regression coverage: `src/__tests__/services/FileAPISecurity.test.ts`.
 SPA/auth configuration caching. Runtime verification against the deployed proxy remains required because ingress may
 override headers.
 
+### Addition 2026-10-12 — link-preview proxy for Open Graph metadata
+
+`nginx.conf.template` proxies requests whose `User-Agent` matches a fixed list of link-preview crawlers to the website backend
+(`GET /api/public/open-graph/<route>`), which renders the Open Graph tags of the route as HTML. The proxy drops the `Cookie` and
+`Authorization` headers, so the document is always built for an anonymous caller and cannot disclose ACL-protected content (A01),
+and it passes the public origin in `X-Vempain-Origin` built from `X-Forwarded-Proto` (accepted values `http`/`https` only) and the
+`Host` header; the backend accepts only a plain `scheme://host[:port]` value and HTML-escapes every text (A03). In the browser the
+tags are set through DOM attributes (`src/tools/openGraph.ts`), never through HTML text, and image URLs go through
+`fileAPI.getFileUrl`/`encodeApiPath` (F-01). The crawler list is a UA allowlist for a convenience feature: a spoofed UA only yields
+the public metadata document instead of the application. The template is rendered with `NGINX_ENVSUBST_FILTER=^VEMPAIN_`, so no
+other environment variable can be substituted into the configuration.
+
 ## A01–A10 checklist
 
 | Category | Verdict | Evidence / disposition |

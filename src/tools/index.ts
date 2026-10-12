@@ -4,3 +4,5 @@ export {parseCoordinate, toCompass16} from './geo';
 export {toBackendPagePath, toDirectoryIndexFrontendPath, toFrontendPagePath, topDirectoryFromPagesPath} from './routes';
 export {cameraMetadata, cameraMetadataEntries, parseFileMetadata} from './imageMetadata';
 export type {CameraMetadata} from './imageMetadata';
+export {applyHeadData, buildHeadData, pageOpenGraph, siteOpenGraph, OPEN_GRAPH_ATTRIBUTE} from './openGraph';
+export type {HeadData, HeadTag} from './openGraph';
