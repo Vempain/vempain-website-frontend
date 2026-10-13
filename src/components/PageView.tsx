@@ -9,19 +9,32 @@ import {PageBodyRenderer} from '@vempain/vempain-rt-renderer';
 
 const {Title, Paragraph} = Typography;
 
+/** Default for the page-list callbacks: a page detail view (`PagesRoute`) never renders the list, so it does not need to supply them. */
+const NOOP = () => undefined;
+
 interface PageViewProps {
     pageContent: WebSitePage | null;
     pages: WebSitePage[];
     pagination: { page: number; size: number; total_elements: number };
     searchInput: string;
-    onSearchInputChange: (value: string) => void;
-    onSearchSubmit: () => void;
-    onPageChange: (pageNumber: number) => void;
+    onSearchInputChange?: (value: string) => void;
+    onSearchSubmit?: () => void;
+    onPageChange?: (pageNumber: number) => void;
     pageError?: string | null;
     pageStatus?: number | null;
 }
 
-function PageView({pageContent, pages, pagination, searchInput, onSearchInputChange, onSearchSubmit, onPageChange, pageError, pageStatus}: PageViewProps) {
+function PageView({
+                      pageContent,
+                      pages,
+                      pagination,
+                      searchInput,
+                      onSearchInputChange = NOOP,
+                      onSearchSubmit = NOOP,
+                      onPageChange = NOOP,
+                      pageError,
+                      pageStatus,
+                  }: PageViewProps) {
     function renderPageDetail() {
         if (!pageContent) {
             return null;

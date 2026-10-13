@@ -109,9 +109,6 @@ export function PagesRoute() {
                         pages={[]}
                         pagination={{page: 0, size: 12, total_elements: 0}}
                         searchInput=""
-                        onSearchInputChange={() => undefined}
-                        onSearchSubmit={() => undefined}
-                        onPageChange={() => undefined}
                 />
         );
     }
