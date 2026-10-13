@@ -51,6 +51,12 @@ describe('imageMetadata', () => {
         expect(camera.iso).toBeUndefined();
     });
 
+    it('parses numeric values written as text with a decimal comma and drops unparsable ones', () => {
+        expect(cameraMetadata(JSON.stringify({FNumber: '2,8', Megapixels: '12.2'})).aperture).toBe('f/2.8');
+        expect(cameraMetadata(JSON.stringify({FNumber: 'wide', Aperture: '1.4'})).aperture).toBe('f/1.4');
+        expect(cameraMetadata(JSON.stringify({FNumber: 'wide', Megapixels: 'many'})).aperture).toBeUndefined();
+    });
+
     it('returns only the available entries in display order', () => {
         expect(cameraMetadataEntries(BACKEND_METADATA).map((entry) => entry.label)).toEqual([
             'Kamera', 'Kuvan koko', 'Megapikseliä', 'Bittiä per näyte', 'ISO', 'Suljinaika', 'Polttoväli', 'Aukko',
