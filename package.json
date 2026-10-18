@@ -32,8 +32,8 @@
     "axios": "^1.20.0",
     "dayjs": "^1.11.23",
     "leaflet": "^1.9.4",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-leaflet": "^5.0.0",
     "react-player": "^3.4.0",
     "react-router-dom": "^7.18.4"
@@ -55,7 +55,7 @@
     "globals": "^17.13.0",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
-    "ts-jest": "^29.4.14",
+    "ts-jest": "^29.4.15",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.71.2",
     "vite": "^8.3.4"
