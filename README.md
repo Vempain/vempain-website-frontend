@@ -23,6 +23,12 @@ proxy paths `/api`, `/file`, and `/health`.
 Do not commit generated bundles, coverage output, local `.env` files, or
 credentials.
 
+## Trace propagation
+
+Every API call carries a W3C `traceparent` header: one trace id per page load (printed once to the browser console at
+debug level as `[vempain] page trace id ...`) and a new span id per request. Traefik and the website backend continue the
+trace, so a visitor's API calls can be followed end to end in Grafana; quote the page trace id when reporting a problem.
+
 ## Open Graph and link previews
 
 Every route sets its document title and Open Graph / Twitter card tags in the browser
