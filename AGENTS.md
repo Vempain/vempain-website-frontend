@@ -9,24 +9,28 @@
 
 ## Layout
 
-| Path              | Purpose                                                                                                    |
-|-------------------|------------------------------------------------------------------------------------------------------------|
-| `src/App.tsx`     | Routes: `/pages/*`, `/search`, `/galleries`, `/galleries/:galleryId`, fallback to the default page         |
-| `src/components/` | Layout (`TopBar`, `SideBar`, `BottomFooter`), page/gallery views, location map/modal, subjects             |
-| `src/pages/`      | Route components                                                                                           |
-| `src/context/`    | `AuthContext`, `ThemeContext`, `OpenGraphContext` (+ `*Instance.ts` files)                                 |
-| `src/services/`   | `AbstractAPI` (local, cookie based) and one `*API.ts` per backend resource                                 |
-| `src/models/`     | TS models mirroring the backend DTOs                                                                       |
-| `src/tools/`      | `routes.ts` (frontend/backend page-path helpers), `safePaths.ts`, `geo.ts`, `deepMerge.ts`, `openGraph.ts` |
-| `src/__tests__/`  | Jest tests (`*.test.ts(x)`), mirroring the `src/` structure                                                |
-| `__mocks__/`      | Jest mocks (assets, styles, services, icons, `react-leaflet`, the renderer, `react-player`)                |
-| `jest/`           | Custom `ts-jest` transformer that makes `import.meta.env` usable in CommonJS test runs                     |
+| Path                       | Purpose                                                                                                                    |
+|----------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `src/App.tsx`              | Routes: `/pages/*`, `/search`, `/galleries`, `/galleries/:galleryId`, fallback to the default page                         |
+| `src/components/`          | Layout (`TopBar`, `SideBar`, `BottomFooter`), page/gallery views, location map/modal, subjects                             |
+| `src/pages/`               | Route components                                                                                                           |
+| `src/context/`             | `AuthContext`, `ThemeContext`, `OpenGraphContext` (+ `*Instance.ts` files)                                                 |
+| `src/services/`            | `AbstractAPI` (local, cookie based) and one `*API.ts` per backend resource                                                 |
+| `src/tools/traceparent.ts` | W3C trace context of the page (own copy of the auth library's tool): one trace id per page load, a new span id per request |
+| `src/models/`              | TS models mirroring the backend DTOs                                                                                       |
+| `src/tools/`               | `routes.ts` (frontend/backend page-path helpers), `safePaths.ts`, `geo.ts`, `deepMerge.ts`, `openGraph.ts`                 |
+| `src/__tests__/`           | Jest tests (`*.test.ts(x)`), mirroring the `src/` structure                                                                |
+| `__mocks__/`               | Jest mocks (assets, styles, services, icons, `react-leaflet`, the renderer, `react-player`)                                |
+| `jest/`                    | Custom `ts-jest` transformer that makes `import.meta.env` usable in CommonJS test runs                                     |
 
 ## Conventions
 
 - **Authentication differs from the admin/file SPAs on purpose**: the website backend uses an `HttpOnly` cookie session (`withCredentials: true`) and
   mirrors refreshed tokens from the `X-Auth-Token` header. The local `src/services/AbstractAPI.ts` implements that; `@vempain/vempain-auth-frontend` is
   used only for shared types (`PagedRequest`, `PagedResponse`, `BuildInfo`). Do not swap in the bearer-token `AbstractAPI` from the auth library.
+- Every request of `AbstractAPI.request` carries a W3C `traceparent` header from `src/tools/traceparent.ts` unless the caller set one (any letter case). The
+  page trace id is logged once at `console.debug` level; Traefik and the website backend continue the
+  trace (the backend CORS allows `traceparent`). Keep the tool in sync with `vempain-auth-frontend/src/tools/traceparent.ts`.
 - JSON contracts are snake_case (`file_path`, `subject_ids`, `total_pages`); `src/__tests__/services/ApiSnakeCaseContract.test.ts` guards the
   critical ones.
 - Build file URLs through `encodeApiPath()` in `src/tools/safePaths.ts`; never concatenate raw paths into `/file/...` URLs.

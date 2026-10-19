@@ -1,5 +1,8 @@
 import type {ApiResponse} from '../models';
 import Axios, {type AxiosInstance, isAxiosError, type Method} from 'axios';
+import {nextTraceparent} from '../tools/traceparent';
+
+const TRACEPARENT_HEADER = 'traceparent';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -59,6 +62,12 @@ export abstract class AbstractAPI {
 
         if (!headers['Content-Type']) {
             headers['Content-Type'] = 'application/json';
+        }
+
+        // W3C trace context of this page load (one trace id per page, a new span id per request), continued by Traefik and
+        // the backend; a caller that set its own traceparent keeps it
+        if (!Object.keys(headers).some(key => key.toLowerCase() === TRACEPARENT_HEADER)) {
+            headers[TRACEPARENT_HEADER] = nextTraceparent();
         }
 
         const method = String(options.method ?? 'GET').toLowerCase() as Method;

@@ -6,3 +6,5 @@ export {cameraMetadata, cameraMetadataEntries, parseFileMetadata} from './imageM
 export type {CameraMetadata} from './imageMetadata';
 export {applyHeadData, buildHeadData, pageOpenGraph, siteOpenGraph, OPEN_GRAPH_ATTRIBUTE} from './openGraph';
 export type {HeadData, HeadTag} from './openGraph';
+export {createTraceContext, currentTraceId, nextTraceparent, randomHexId, TRACEPARENT_PATTERN} from './traceparent';
+export type {TraceContext} from './traceparent';
