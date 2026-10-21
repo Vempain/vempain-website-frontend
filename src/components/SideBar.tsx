@@ -2,10 +2,10 @@ import {MenuFoldOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
 import {Button, Layout, Tooltip, Tree, type TreeProps} from 'antd';
 import type {DataNode} from 'antd/es/tree';
 import {type Key, useCallback, useEffect, useMemo, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import type {DirectoryNode} from '../models';
 import {pageAPI} from '../services';
-import {toPathSegment, trimSlashes} from '../tools';
+import {DEFAULT_PAGE_PATH, toFrontendPagePath, toPathSegment, trimSlashes} from '../tools';
 
 const {Sider} = Layout;
 const NARROW_DISPLAY_QUERY = '(max-width: 799px)';
@@ -179,7 +179,9 @@ export function SideBar({
                 <div className="sidebar-header">
                     {!collapsed && (
                             <Tooltip title={siteDescription}>
-                                <div className="logo">{siteName}</div>
+                                <Link to={toFrontendPagePath(DEFAULT_PAGE_PATH)} className="logo" aria-label={`${siteName}: front page`}>
+                                    {siteName}
+                                </Link>
                             </Tooltip>
                     )}
                     <Tooltip title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>

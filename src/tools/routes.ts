@@ -1,5 +1,8 @@
 import {trimSlashes} from './VempainTools';
 
+/** Backend path of the front page: the fallback route and the site name link in the sidebar lead to it */
+export const DEFAULT_PAGE_PATH = 'index';
+
 export function toFrontendPagePath(filePath: string): string {
     const normalized = trimSlashes(filePath || 'index') || 'index';
     return `/pages/${normalized}`;
