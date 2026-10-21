@@ -10,12 +10,11 @@ import {GalleryRoute} from './pages/GalleryRoute';
 import {GalleriesRoute} from './pages/GalleriesRoute';
 import {PagesRoute} from './pages/PagesRoute';
 import {SearchRoute} from './pages/SearchRoute';
-import {toDirectoryIndexFrontendPath, toFrontendPagePath, topDirectoryFromPagesPath} from './tools';
+import {DEFAULT_PAGE_PATH, toDirectoryIndexFrontendPath, toFrontendPagePath, topDirectoryFromPagesPath} from './tools';
 
 const {Content} = Layout;
 const {Title, Paragraph} = Typography;
 
-const DEFAULT_PAGE_PATH = 'index';
 const DEFAULT_SITE_CONFIG = {name: 'Vempain', description: 'Vempain'};
 
 function App() {

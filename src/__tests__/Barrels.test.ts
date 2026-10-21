@@ -42,6 +42,7 @@ describe('module barrels', () => {
 
     it('tools re-exports the path, geo, metadata and open graph helpers', () => {
         expect(values(tools as unknown as Record<string, unknown>)).toEqual({
+            DEFAULT_PAGE_PATH: 'string',
             OPEN_GRAPH_ATTRIBUTE: 'string',
             TRACEPARENT_PATTERN: 'object',
             applyHeadData: 'function',

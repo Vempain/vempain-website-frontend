@@ -37,6 +37,13 @@ body, html {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    text-decoration: none;
+}
+
+.app-sider .logo:hover,
+.app-sider .logo:focus-visible {
+    color: var(--color-text, #fff);
+    text-decoration: underline;
 }
 
 .app-sider {
