@@ -25,4 +25,10 @@ export interface WebSiteFile {
     pages?: number | null;
     metadata?: string | null;
     subjects: WebSiteSubject[];
+    /** Nick of the admin user who created the resource on the site; null for rows published before the audit trail existed */
+    creator?: string | null;
+    created?: string | null;
+    /** Nick of the admin user who last changed the resource on the site; null when never changed */
+    modifier?: string | null;
+    modified?: string | null;
 }
