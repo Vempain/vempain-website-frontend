@@ -255,6 +255,17 @@ describe('SideBar', () => {
         root = createRoot(container);
     });
 
+    it('links the site name to the front page', async () => {
+        render(<SideBar siteName="Site" siteDescription="About" selectedDirectory="docs" onPagePathSelect={jest.fn<(path: string) => void>()}/>);
+        await settle();
+
+        const link = container.querySelector('a.logo') as HTMLAnchorElement | null;
+        expect(link).not.toBeNull();
+        expect(link!.textContent).toBe('Site');
+        expect(link!.getAttribute('href')).toBe('/pages/index');
+        expect(link!.getAttribute('aria-label')).toBe('Site: front page');
+    });
+
     it('renders expanded without a matchMedia implementation', async () => {
         (window as { matchMedia?: typeof window.matchMedia }).matchMedia = undefined;
         render(<SideBar siteName="Site" siteDescription="About" selectedDirectory="docs" onPagePathSelect={jest.fn<(path: string) => void>()}/>);
