@@ -31,6 +31,9 @@
 - Every request of `AbstractAPI.request` carries a W3C `traceparent` header from `src/tools/traceparent.ts` unless the caller set one (any letter case). The
   page trace id is logged once at `console.debug` level; Traefik and the website backend continue the
   trace (the backend CORS allows `traceparent`). Keep the tool in sync with `vempain-auth-frontend/src/tools/traceparent.ts`.
+- `WebSiteFile`, `WebSiteGallery`, `WebSiteLocation` and `WebSiteSubject` carry the optional audit trail the backend exposes (`creator`, `created`,
+  `modifier`, `modified`: admin users by nick, null for rows published before the site schema had the columns), mirroring
+  `WebSitePage`; keep the models in step with the backend's `ResponseContractJTC`.
 - JSON contracts are snake_case (`file_path`, `subject_ids`, `total_pages`); `src/__tests__/services/ApiSnakeCaseContract.test.ts` guards the
   critical ones.
 - Build file URLs through `encodeApiPath()` in `src/tools/safePaths.ts`; never concatenate raw paths into `/file/...` URLs.
