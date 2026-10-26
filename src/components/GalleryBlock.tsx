@@ -26,6 +26,18 @@ const THUMBNAIL_FRAME_STYLE = {
     cursor: 'pointer',
 };
 
+/**
+ * The Ant Design image wrapper (`.ant-image`) is an inline box without a height of its own; it has to fill the frame, otherwise the image's
+ * `height: 100%` resolves to its natural height and `object-fit` has nothing to fit into: a tall thumbnail would show only its top and a wide one
+ * would leave the bottom of the frame empty.
+ */
+const THUMBNAIL_WRAPPER_STYLE = {
+    display: 'block',
+    width: '100%',
+    height: '100%',
+};
+
+/** The thumbnail fills the frame on its narrower dimension and is cropped to the centre on the wider one, never squeezed. */
 const THUMBNAIL_IMAGE_STYLE = {
     width: '100%',
     height: '100%',
@@ -51,6 +63,8 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
     const [locationModalOpen, setLocationModalOpen] = useState(false);
     const [selectedLocation, setSelectedLocation] = useState<WebSiteLocation | null>(null);
     const prefetchingRef = useRef(false);
+    const loadingMoreRef = useRef(false);
+    const loadMoreSentinelRef = useRef<HTMLDivElement | null>(null);
 
     const handlePreviewVisibleChange = (visible: boolean) => {
         setPreviewVisible(visible);
@@ -65,6 +79,20 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
     };
 
     const stableFetchMore = useCallback(() => fetchMoreFiles(), [fetchMoreFiles]);
+
+    /** Loads the next batch once; a batch that is already on its way is not requested again. Errors are left to the caller's own handling. */
+    const loadMore = useCallback(() => {
+        if (!hasMore || loadingMoreRef.current) {
+            return;
+        }
+        loadingMoreRef.current = true;
+        stableFetchMore()
+                .catch(() => { /* the button stays for a retry */
+                })
+                .finally(() => {
+                    loadingMoreRef.current = false;
+                });
+    }, [hasMore, stableFetchMore]);
 
     // Memos
     const activeFile = useMemo(() => previewVisible ? siteFileList[previewIndex] ?? null : null, [siteFileList, previewIndex, previewVisible]);
@@ -126,6 +154,21 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
                     prefetchingRef.current = false;
                 });
     }, [previewVisible, previewIndex, siteFileList.length, hasMore, stableFetchMore]);
+
+    // Load the next batch when the end of the grid scrolls into view; the button below the grid stays as the fallback
+    useEffect(() => {
+        const sentinel = loadMoreSentinelRef.current;
+        if (!sentinel || !hasMore || typeof IntersectionObserver === 'undefined') {
+            return;
+        }
+        const observer = new IntersectionObserver((entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+                loadMore();
+            }
+        }, {rootMargin: '200px 0px'});
+        observer.observe(sentinel);
+        return () => observer.disconnect();
+    }, [hasMore, loadMore, siteFileList.length]);
 
     return (
             <Card size="small" className="gallery-embed">
@@ -213,7 +256,7 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
                                                         <Image
                                                                 src={thumbPath}
                                                                 alt={filePath}
-                                                                style={THUMBNAIL_IMAGE_STYLE}
+                                                                styles={{root: THUMBNAIL_WRAPPER_STYLE, image: THUMBNAIL_IMAGE_STYLE}}
                                                                 preview={{src: imagePath}}
                                                         />
                                                     </div>
@@ -225,7 +268,9 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
                     )}
                     {siteFileList.length > 0 && hasMore && (
                             <div style={{display: 'flex', justifyContent: 'center', marginTop: 16}}>
-                                <Button type="primary" onClick={stableFetchMore} disabled={!hasMore}>
+                                <div ref={loadMoreSentinelRef} data-testid="gallery-load-more-sentinel" aria-hidden="true"
+                                     style={{position: 'absolute', width: 1, height: 1}}/>
+                                <Button type="primary" onClick={loadMore} disabled={!hasMore}>
                                     Lataa lisää
                                 </Button>
                             </div>
