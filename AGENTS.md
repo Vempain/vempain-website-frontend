@@ -67,9 +67,20 @@
 
 ## Gallery and image overlay
 
-- `src/components/GalleryBlock.tsx` renders published galleries. `@vempain/vempain-rt-renderer` only delegates gallery embeds to the host through
+- `src/components/PageTags.tsx` shows the subjects of a page as colored Ant Design tags in the title row of `PageView` (`.page-title-row`);
+  the color of a tag is a stable function of its name (`tools/tagColors.ts`, `tagColor` over the preset palette `TAG_COLORS`), and a click opens
+  the subject search. `ShowSubjects` (single blue tags) stays for the page list cards and the metadata overlay. Tested in
+  `src/__tests__/components/PageView.test.tsx` and `src/__tests__/tools/tagColors.test.ts`.
+- `src/components/GalleryBlock.tsx` renders published galleries. Each thumbnail sits in a fixed-ratio frame (`THUMBNAIL_FRAME_STYLE`, `overflow: hidden`)
+  and is drawn with `object-fit: cover` centred, so the frame always shows the full narrower dimension and the middle of the wider one. The Ant Design
+  `Image` wrapper (`.ant-image`) must be sized to the frame through `styles.root` (`THUMBNAIL_WRAPPER_STYLE`); without it the wrapper has no height,
+  the image keeps its natural shape and the frame clips the top of a tall thumbnail or leaves the bottom empty under a wide one.
+  The next batch of a gallery loads by itself when the sentinel under the grid scrolls into view (`IntersectionObserver`, 200px ahead,
+  one request at a time through `loadMore`); the "Lataa lisää" button stays below the grid as the fallback and calls the same `loadMore`.
+  Without `IntersectionObserver` (old browsers, jsdom) only the button loads. `@vempain/vempain-rt-renderer` only delegates gallery embeds to the host through
   the `renderGallery` prop of `PageBodyRenderer`, so gallery and image-overlay changes belong in this repository, not in the renderer.
-- The thumbnail grid is responsive: `repeat(auto-fill, minmax(min(250px, 100%), 1fr))` capped at five columns. It drops columns with the
+- The thumbnail grid is responsive: `repeat(auto-fill, minmax(min(250px, 100%), 1fr))` with no cap on the column count (the grid spans the
+  content width, so a wide screen gets as many columns as fit). It drops columns with the
   available width down to one, and the single column shrinks below the thumbnail width, so the sidebar collapse (`SideBar.tsx`,
   `max-width: 799px`) only has to handle widths below one column. Thumbnails keep a fixed 250:166 aspect ratio.
 - `src/components/MetadataOverlay.tsx` is paged like a carousel: page `details` (comment, dates, rights, author, subjects) and page `camera`,

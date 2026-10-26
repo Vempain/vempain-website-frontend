@@ -21,6 +21,7 @@ describe('module barrels', () => {
             LocationBadge: 'function',
             LocationModal: 'function',
             MetadataOverlay: 'function',
+            PageTags: 'function',
             PageView: 'function',
             ShowSubjects: 'function',
             SideBar: 'function',
@@ -44,6 +45,7 @@ describe('module barrels', () => {
         expect(values(tools as unknown as Record<string, unknown>)).toEqual({
             DEFAULT_PAGE_PATH: 'string',
             OPEN_GRAPH_ATTRIBUTE: 'string',
+            TAG_COLORS: 'object',
             TRACEPARENT_PATTERN: 'object',
             applyHeadData: 'function',
             buildHeadData: 'function',
@@ -58,6 +60,7 @@ describe('module barrels', () => {
             parseFileMetadata: 'function',
             randomHexId: 'function',
             siteOpenGraph: 'function',
+            tagColor: 'function',
             toBackendPagePath: 'function',
             toCompass16: 'function',
             toDirectoryIndexFrontendPath: 'function',

@@ -1,7 +1,7 @@
 import {Col, Input, Pagination, Row, Typography} from 'antd';
 import {useMemo} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
-import {GalleryLoader, ShowSubjects} from './index';
+import {GalleryLoader, PageTags, ShowSubjects} from './index';
 import type {WebSitePage} from '../models';
 import {toFrontendPagePath} from '../tools';
 import dayjs from "dayjs";
@@ -42,13 +42,15 @@ function PageView({
 
         return (
                 <div className="content-section page-detail">
-                    <Title level={2}>{pageContent.title}</Title>
+                    <div className="page-title-row" style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 12}}>
+                        <Title level={2} style={{marginBottom: 0}}>{pageContent.title}</Title>
+                        <PageTags subjects={pageContent.subjects}/>
+                    </div>
                     {pageContent.created && (
                             <Paragraph type={"secondary"}>
                                 Julkaistu {dayjs(pageContent.created).format("YYYY-MM-DD hh:mm")} - {pageContent.creator}
                             </Paragraph>
                     )}
-                    <ShowSubjects subjects={pageContent.subjects}/>
                     <PageBodyRenderer
                             body={pageContent.body}
                             pageTitle={pageContent.title}

@@ -5,6 +5,7 @@ export {GalleryLoader} from './GalleryLoader';
 export {MetadataOverlay} from './MetadataOverlay';
 export type {MetadataOverlayPage, MetadataOverlayProps} from './MetadataOverlay';
 export {ShowSubjects} from './ShowSubjects';
+export {PageTags} from './PageTags';
 export {SubjectSearchLoader} from './SubjectSearchLoader';
 export {default as PageView} from './PageView';
 export {LocationBadge} from './LocationBadge';

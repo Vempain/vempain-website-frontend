@@ -78,6 +78,25 @@ describe('GalleryBlock', () => {
         });
     }
 
+    it('fills the frame with the centre of the thumbnail on both axes', () => {
+        const files = [fileWithDetails, fileWithoutDetails];
+        render(<GalleryBlock title="Trip" siteFileList={files} totalFiles={files.length} hasMore={false} fetchMoreFiles={async () => []}/>);
+
+        const frame = container.querySelector('[data-testid="gallery-grid"] div[style*="position"]') as HTMLElement;
+        expect(frame.style.aspectRatio).toBe('250 / 166');
+        expect(frame.style.overflow).toBe('hidden');
+        // the Ant Design wrapper must span the frame, otherwise object-fit has no box to fit into
+        const wrapper = frame.querySelector('.ant-image') as HTMLElement;
+        expect(wrapper.style.width).toBe('100%');
+        expect(wrapper.style.height).toBe('100%');
+        expect(wrapper.style.display).toBe('block');
+        const image = wrapper.querySelector('img') as HTMLImageElement;
+        expect(image.style.width).toBe('100%');
+        expect(image.style.height).toBe('100%');
+        expect(image.style.objectFit).toBe('cover');
+        expect(image.style.objectPosition).toBe('center');
+    });
+
     it('skips files without a path and builds thumbnail URLs through the file service', () => {
         render(<GalleryBlock title="" siteFileList={[fileWithDetails, fileWithoutPath]} totalFiles={2} hasMore={false}
                              fetchMoreFiles={jest.fn<() => Promise<WebSiteFile[]>>()}/>);
@@ -126,6 +145,71 @@ describe('GalleryBlock', () => {
         await settle();
         expect(fetchMore).toHaveBeenCalledTimes(1);
         expect(document.body.textContent).toContain('/ 5');
+    });
+
+    it('loads the next batch when the end of the grid scrolls into view and keeps the button as a fallback', async () => {
+        const observers: { callback: IntersectionObserverCallback; observed: Element[]; disconnected: boolean }[] = [];
+
+        class IntersectionObserverMock {
+            callback: IntersectionObserverCallback;
+            observed: Element[] = [];
+            disconnected = false;
+
+            constructor(callback: IntersectionObserverCallback) {
+                this.callback = callback;
+                observers.push(this as unknown as typeof observers[number]);
+            }
+
+            observe(element: Element) {
+                this.observed.push(element);
+            }
+
+            disconnect() {
+                this.disconnected = true;
+            }
+        }
+
+        Object.defineProperty(globalThis, 'IntersectionObserver', {value: IntersectionObserverMock, configurable: true});
+        try {
+            let resolveFetch: (files: WebSiteFile[]) => void = () => undefined;
+            const fetchMore = jest.fn<() => Promise<WebSiteFile[]>>(() => new Promise((resolve) => {
+                resolveFetch = resolve;
+            }));
+            render(<GalleryBlock title="Gallery" siteFileList={[fileWithDetails, fileWithoutDetails]} totalFiles={5} hasMore
+                                 fetchMoreFiles={fetchMore}/>);
+
+            const sentinel = container.querySelector('[data-testid="gallery-load-more-sentinel"]');
+            expect(sentinel).not.toBeNull();
+            expect(observers).toHaveLength(1);
+            expect(observers[0].observed).toEqual([sentinel]);
+
+            // the sentinel scrolls into view: one load, and a second notification while it is loading is ignored
+            const intersect = (isIntersecting: boolean) => act(() => observers[0].callback(
+                    [{isIntersecting} as IntersectionObserverEntry], observers[0] as unknown as IntersectionObserver));
+            intersect(false);
+            expect(fetchMore).not.toHaveBeenCalled();
+            intersect(true);
+            intersect(true);
+            expect(fetchMore).toHaveBeenCalledTimes(1);
+            await act(async () => {
+                resolveFetch([]);
+                await settle();
+            });
+            intersect(true);
+            expect(fetchMore).toHaveBeenCalledTimes(2);
+
+            // the button is still there and works
+            const button = findButton(container, 'Lataa lisää');
+            expect(button).toBeDefined();
+            await act(async () => {
+                resolveFetch([]);
+                await settle();
+            });
+            click(button ?? null);
+            expect(fetchMore).toHaveBeenCalledTimes(3);
+        } finally {
+            Object.defineProperty(globalThis, 'IntersectionObserver', {value: undefined, configurable: true});
+        }
     });
 
     it('does not prefetch while the preview is far from the end of the loaded files', async () => {

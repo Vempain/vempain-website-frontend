@@ -98,6 +98,22 @@ describe('PageView page list', () => {
         expect(container.textContent).toContain('Tagged');
     });
 
+    it('shows the tags next to the title in their own colors and opens the subject search from them', () => {
+        const second = {...subject, id: 2, subject: 'finland'};
+        render(<PageView pageContent={{...pages[0], subjects: [subject, second]}} pages={[]} pagination={{page: 0, size: 12, total_elements: 0}}
+                         searchInput=""/>);
+
+        const row = container.querySelector('.page-title-row') as HTMLElement;
+        expect(row.textContent).toContain('Tagged');
+        const tags = Array.from(row.querySelectorAll('.ant-tag'));
+        expect(tags.map((tag) => tag.textContent)).toEqual(['tag', 'finland']);
+        expect(tags[0].className).toMatch(/ant-tag-(magenta|red|volcano|orange|gold|lime|green|cyan|blue|geekblue|purple)/);
+        expect(container.querySelector('.subjects-list')).toBeNull();
+
+        act(() => (container.querySelector('[data-testid="page-tag-2"]') as HTMLElement).click());
+        expect(container.textContent).toContain('Tagged');
+    });
+
     it('renders a page without a creation date and without galleries', () => {
         render(<PageView pageContent={{...pages[2], title: 'Detail', body: 'plain body'}} pages={[]} pagination={{page: 0, size: 12, total_elements: 0}}
                          searchInput=""/>);
