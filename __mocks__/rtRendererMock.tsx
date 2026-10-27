@@ -4,7 +4,8 @@ import type {ReactNode} from 'react';
  * Stand-in for the ESM-only `@vempain/vempain-rt-renderer` package. Only the values are mocked; the types still come from the real package,
  * because `moduleNameMapper` is a runtime-only redirection.
  *
- * `PageBodyRenderer` echoes the body and delegates every `<gallery id="..."/>`-ish marker in it to the host through `renderGallery`, which is
+ * `PageBodyRenderer` renders the body as HTML, as the real renderer does for the HTML between the embeds (so the links of a body exist in the
+ * DOM for `src/components/PageBody.tsx`), and delegates every `<gallery id="..."/>`-ish marker in it to the host through `renderGallery`, which is
  * the contract `src/components/PageView.tsx` relies on.
  */
 
@@ -21,7 +22,7 @@ export function PageBodyRenderer({body, pageTitle, renderGallery}: PageBodyRende
 
     return (
             <div data-testid="page-body" data-page-title={pageTitle ?? ''}>
-                <div data-testid="page-body-content">{body}</div>
+                <div data-testid="page-body-content" dangerouslySetInnerHTML={{__html: String(body ?? '')}}/>
                 {renderGallery && galleryIds.map((galleryId, index) => (
                         <div data-testid="page-body-gallery" key={`${galleryId}-${index}`}>{renderGallery(galleryId, index)}</div>
                 ))}

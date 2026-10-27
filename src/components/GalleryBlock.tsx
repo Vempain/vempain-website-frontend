@@ -14,7 +14,28 @@ const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 166;
 const THUMB_TOOLTIP_MAX_WIDTH = 500;
 const THUMB_TOOLTIP_MAX_HEIGHT = 400;
+/** Space the hover preview keeps free on each side of the viewport, so it never touches the browser edge on a narrow screen. */
+const THUMB_TOOLTIP_VIEWPORT_GUTTER = 16;
 const DISPLAY_DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+
+/**
+ * The hover preview is an Ant Design tooltip whose placement engine keeps the tooltip box inside the viewport by shifting it sideways or flipping
+ * it below the thumbnail. That only works when the box is as wide as its content: Ant Design caps a tooltip at 250px, and a wider image would
+ * simply overflow the box and bleed past the browser edge on the outer columns, so the cap is lifted for the preview and the image itself is
+ * bounded by the viewport instead of only by a fixed size.
+ */
+const THUMB_TOOLTIP_STYLES = {
+    root: {maxWidth: 'none'},
+    container: {padding: 0, background: '#000'},
+} as const;
+
+const THUMB_TOOLTIP_IMAGE_STYLE = {
+    maxWidth: `min(${THUMB_TOOLTIP_MAX_WIDTH}px, calc(100vw - ${THUMB_TOOLTIP_VIEWPORT_GUTTER * 2}px))`,
+    maxHeight: `min(${THUMB_TOOLTIP_MAX_HEIGHT}px, calc(100vh - ${THUMB_TOOLTIP_VIEWPORT_GUTTER * 2}px))`,
+    width: 'auto',
+    height: 'auto',
+    display: 'block',
+} as const;
 
 /** Thumbnails fill their grid cell and keep the thumbnail aspect ratio instead of a fixed pixel size. */
 const THUMBNAIL_FRAME_STYLE = {
@@ -62,8 +83,8 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
     const [showMetadata, setShowMetadata] = useState<boolean>(false);
     const [locationModalOpen, setLocationModalOpen] = useState(false);
     const [selectedLocation, setSelectedLocation] = useState<WebSiteLocation | null>(null);
-    const prefetchingRef = useRef(false);
-    const loadingMoreRef = useRef(false);
+    /** True while the host is fetching the next batch; the scroll sentinel, the button and the preview prefetch all share this one guard. */
+    const fetchInFlightRef = useRef(false);
     const loadMoreSentinelRef = useRef<HTMLDivElement | null>(null);
 
     const handlePreviewVisibleChange = (visible: boolean) => {
@@ -80,17 +101,20 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
 
     const stableFetchMore = useCallback(() => fetchMoreFiles(), [fetchMoreFiles]);
 
-    /** Loads the next batch once; a batch that is already on its way is not requested again. Errors are left to the caller's own handling. */
+    /**
+     * Loads the next batch once; while a batch is on its way, every further request (sentinel, button or preview prefetch) is ignored. The host's
+     * promise must therefore settle only when the batch has arrived. Errors are left to the caller's own handling.
+     */
     const loadMore = useCallback(() => {
-        if (!hasMore || loadingMoreRef.current) {
+        if (!hasMore || fetchInFlightRef.current) {
             return;
         }
-        loadingMoreRef.current = true;
+        fetchInFlightRef.current = true;
         stableFetchMore()
                 .catch(() => { /* the button stays for a retry */
                 })
                 .finally(() => {
-                    loadingMoreRef.current = false;
+                    fetchInFlightRef.current = false;
                 });
     }, [hasMore, stableFetchMore]);
 
@@ -140,20 +164,12 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
     }, [activeFile, metadataEntries]);
     const hasOverlayContent = overlayPages.length > 0;
 
-    // Prefetch next page when near the end of the current set
+    // Prefetch the next batch when the preview is near the end of the loaded files; shares the in-flight guard of the scroll and button loads
     useEffect(() => {
         if (!previewVisible || !hasMore) return;
-        if (prefetchingRef.current) return;
         if (previewIndex < siteFileList.length - 2) return;
-
-        prefetchingRef.current = true;
-        stableFetchMore()
-                .catch(() => { /* ignore errors */
-                })
-                .finally(() => {
-                    prefetchingRef.current = false;
-                });
-    }, [previewVisible, previewIndex, siteFileList.length, hasMore, stableFetchMore]);
+        loadMore();
+    }, [previewVisible, previewIndex, siteFileList.length, hasMore, loadMore]);
 
     // Load the next batch when the end of the grid scrolls into view; the button below the grid stays as the fallback
     useEffect(() => {
@@ -222,18 +238,8 @@ export function GalleryBlock({title, siteFileList, totalFiles, gallerySubjects, 
                                                 <Tooltip
                                                         key={`galleryfile-${siteFile.id}`}
                                                         placement="top"
-                                                        styles={{container: {padding: 0, background: '#000'}}}
-                                                        title={
-                                                            <img
-                                                                    src={thumbPath}
-                                                                    alt={filePath}
-                                                                    style={{
-                                                                        maxWidth: THUMB_TOOLTIP_MAX_WIDTH,
-                                                                        maxHeight: THUMB_TOOLTIP_MAX_HEIGHT,
-                                                                        display: 'block',
-                                                                    }}
-                                                            />
-                                                        }
+                                                        styles={THUMB_TOOLTIP_STYLES}
+                                                        title={<img src={thumbPath} alt={filePath} style={THUMB_TOOLTIP_IMAGE_STYLE}/>}
                                                 >
                                                     <div
                                                             style={{...THUMBNAIL_FRAME_STYLE, position: 'relative'}}

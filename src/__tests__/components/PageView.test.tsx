@@ -114,6 +114,22 @@ describe('PageView page list', () => {
         expect(container.textContent).toContain('Tagged');
     });
 
+    it('applies the custom style of the page to the document and marks the page canvas', () => {
+        render(<PageView pageContent={{...pages[2], title: 'Styled', body: '<p>styled body</p>', page_style: '.vps-page-canvas { max-width: 60rem; }'}}
+                         pages={[]} pagination={{page: 0, size: 12, total_elements: 0}} searchInput=""/>);
+        const canvas = container.querySelector('[data-testid="page-canvas"]');
+        expect(canvas?.classList.contains('vps-page-canvas')).toBe(true);
+        expect(canvas?.classList.contains('page-detail')).toBe(true);
+        expect(container.querySelector('style[data-testid="page-style"]')?.textContent).toBe('.vps-page-canvas { max-width: 60rem; }');
+    });
+
+    it('renders no style element for a page without a custom style', () => {
+        render(<PageView pageContent={{...pages[2], title: 'Plain', body: 'plain', page_style: null}} pages={[]}
+                         pagination={{page: 0, size: 12, total_elements: 0}} searchInput=""/>);
+        expect(container.querySelector('style[data-testid="page-style"]')).toBeNull();
+        expect(container.querySelector('[data-testid="page-canvas"]')?.classList.contains('vps-page-canvas')).toBe(true);
+    });
+
     it('renders a page without a creation date and without galleries', () => {
         render(<PageView pageContent={{...pages[2], title: 'Detail', body: 'plain body'}} pages={[]} pagination={{page: 0, size: 12, total_elements: 0}}
                          searchInput=""/>);
