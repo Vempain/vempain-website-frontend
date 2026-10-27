@@ -1,5 +1,7 @@
 export {BottomFooter} from './BottomFooter';
 export {GalleryBlock} from './GalleryBlock';
+export {PageBody} from './PageBody';
+export {PageStyle} from './PageStyle';
 export {GALLERY_GRID_STYLE} from './GalleryBlockStyles';
 export {GalleryLoader} from './GalleryLoader';
 export {MetadataOverlay} from './MetadataOverlay';

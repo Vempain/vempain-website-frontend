@@ -212,6 +212,76 @@ describe('GalleryBlock', () => {
         }
     });
 
+    it('does not prefetch from the preview while a scroll load of the next batch is still on its way', async () => {
+        const observers: { callback: IntersectionObserverCallback }[] = [];
+
+        class IntersectionObserverMock {
+            callback: IntersectionObserverCallback;
+
+            constructor(callback: IntersectionObserverCallback) {
+                this.callback = callback;
+                observers.push(this);
+            }
+
+            observe() {
+            }
+
+            disconnect() {
+            }
+        }
+
+        Object.defineProperty(globalThis, 'IntersectionObserver', {value: IntersectionObserverMock, configurable: true});
+        try {
+            let resolveFetch: (files: WebSiteFile[]) => void = () => undefined;
+            const fetchMore = jest.fn<() => Promise<WebSiteFile[]>>(() => new Promise((resolve) => {
+                resolveFetch = resolve;
+            }));
+            render(<GalleryBlock title="Gallery" siteFileList={[fileWithDetails, fileWithoutDetails]} totalFiles={5} hasMore
+                                 fetchMoreFiles={fetchMore}/>);
+            act(() => observers[0].callback([{isIntersecting: true} as IntersectionObserverEntry], observers[0] as unknown as IntersectionObserver));
+            expect(fetchMore).toHaveBeenCalledTimes(1);
+
+            // the preview opens on the last loaded image, which would normally prefetch the next batch
+            click(container.querySelectorAll('[data-testid="gallery-grid"] div[style*="position"]')[1]);
+            await settle();
+            expect(document.body.querySelector('.ant-image-preview')).not.toBeNull();
+            expect(fetchMore).toHaveBeenCalledTimes(1);
+
+            await act(async () => {
+                resolveFetch([]);
+                await settle();
+            });
+            act(() => observers[observers.length - 1].callback(
+                    [{isIntersecting: true} as IntersectionObserverEntry], observers[observers.length - 1] as unknown as IntersectionObserver));
+            expect(fetchMore).toHaveBeenCalledTimes(2);
+        } finally {
+            Object.defineProperty(globalThis, 'IntersectionObserver', {value: undefined, configurable: true});
+        }
+    });
+
+    it('shows the hover preview in a tooltip box that grows with the image and is bounded by the viewport', async () => {
+        render(<GalleryBlock title="Gallery" siteFileList={[fileWithDetails]} totalFiles={1} hasMore={false}
+                             fetchMoreFiles={jest.fn<() => Promise<WebSiteFile[]>>()}/>);
+        const frame = container.querySelector('[data-testid="gallery-grid"] div[style*="position"]');
+        act(() => {
+            frame?.dispatchEvent(new MouseEvent('mouseover', {bubbles: true}));
+        });
+        await act(async () => {
+            await new Promise((resolve) => window.setTimeout(resolve, 200));
+        });
+
+        const tooltip = document.body.querySelector<HTMLElement>('.ant-tooltip');
+        expect(tooltip).not.toBeNull();
+        // the box must not be capped narrower than the image, otherwise the placement engine cannot keep the image on screen
+        expect(tooltip?.style.maxWidth).toBe('none');
+        const preview = tooltip?.querySelector('img');
+        expect(preview?.getAttribute('src')).toBe(fileAPI.getFileThumbUrl(fileAPI.getFileUrl('images/one.jpg')));
+        expect(preview?.style.maxWidth).toBe('min(500px, calc(100vw - 32px))');
+        expect(preview?.style.maxHeight).toBe('min(400px, calc(100vh - 32px))');
+        expect(preview?.style.width).toBe('auto');
+        expect(preview?.style.height).toBe('auto');
+    });
+
     it('does not prefetch while the preview is far from the end of the loaded files', async () => {
         const fetchMore = jest.fn<() => Promise<WebSiteFile[]>>().mockResolvedValue([]);
         const files = [fileWithDetails, fileWithoutDetails, {...fileWithoutDetails, id: 3, file_path: 'images/three.jpg'}];

@@ -3,7 +3,10 @@ export {deepMerge} from './deepMerge';
 export {TAG_COLORS, tagColor} from './tagColors';
 export type {TagColor} from './tagColors';
 export {parseCoordinate, toCompass16} from './geo';
-export {DEFAULT_PAGE_PATH, toBackendPagePath, toDirectoryIndexFrontendPath, toFrontendPagePath, topDirectoryFromPagesPath} from './routes';
+export {PAGE_CANVAS_CLASS, sanitizePageStyle} from './pageStyle';
+export {
+    DEFAULT_PAGE_PATH, internalRouteFromHref, toBackendPagePath, toDirectoryIndexFrontendPath, toFrontendPagePath, topDirectoryFromPagesPath
+} from './routes';
 export {cameraMetadata, cameraMetadataEntries, parseFileMetadata} from './imageMetadata';
 export type {CameraMetadata} from './imageMetadata';
 export {applyHeadData, buildHeadData, pageOpenGraph, siteOpenGraph, OPEN_GRAPH_ATTRIBUTE} from './openGraph';

@@ -2,10 +2,12 @@ import {Col, Input, Pagination, Row, Typography} from 'antd';
 import {useMemo} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import {GalleryLoader, PageTags, ShowSubjects} from './index';
+import {PageBody} from './PageBody';
+import {PageStyle} from './PageStyle';
+import {PAGE_CANVAS_CLASS} from '../tools/pageStyle';
 import type {WebSitePage} from '../models';
 import {toFrontendPagePath} from '../tools';
 import dayjs from "dayjs";
-import {PageBodyRenderer} from '@vempain/vempain-rt-renderer';
 
 const {Title, Paragraph} = Typography;
 
@@ -41,7 +43,8 @@ function PageView({
         }
 
         return (
-                <div className="content-section page-detail">
+                <div className={`content-section page-detail ${PAGE_CANVAS_CLASS}`} data-testid="page-canvas">
+                    <PageStyle css={pageContent.page_style}/>
                     <div className="page-title-row" style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 12}}>
                         <Title level={2} style={{marginBottom: 0}}>{pageContent.title}</Title>
                         <PageTags subjects={pageContent.subjects}/>
@@ -51,7 +54,7 @@ function PageView({
                                 Julkaistu {dayjs(pageContent.created).format("YYYY-MM-DD hh:mm")} - {pageContent.creator}
                             </Paragraph>
                     )}
-                    <PageBodyRenderer
+                    <PageBody
                             body={pageContent.body}
                             pageTitle={pageContent.title}
                             renderGallery={(galleryId: number, index: number) => (

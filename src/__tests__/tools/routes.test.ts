@@ -1,5 +1,5 @@
 import {describe, expect, it} from '@jest/globals';
-import {toBackendPagePath, toDirectoryIndexFrontendPath, toFrontendPagePath, topDirectoryFromPagesPath} from '../../tools/routes';
+import {internalRouteFromHref, toBackendPagePath, toDirectoryIndexFrontendPath, toFrontendPagePath, topDirectoryFromPagesPath} from '../../tools/routes';
 
 describe('toFrontendPagePath', () => {
     it('prefixes the trimmed backend file path with the pages route', () => {
@@ -63,5 +63,37 @@ describe('topDirectoryFromPagesPath', () => {
 
     it('returns null when the first segment below pages is empty', () => {
         expect(topDirectoryFromPagesPath('/pages//travel')).toBeNull();
+    });
+});
+
+describe('internalRouteFromHref', () => {
+    const origin = 'https://site.example';
+
+    it('returns the router path of the page, gallery and search links the application serves itself', () => {
+        expect(internalRouteFromHref('/pages/docs/about', origin)).toBe('/pages/docs/about');
+        expect(internalRouteFromHref('/pages/docs/my%20page?x=1#top', origin)).toBe('/pages/docs/my%20page?x=1#top');
+        expect(internalRouteFromHref('/galleries', origin)).toBe('/galleries');
+        expect(internalRouteFromHref('/galleries/7', origin)).toBe('/galleries/7');
+        expect(internalRouteFromHref('/search?subjects=1', origin)).toBe('/search?subjects=1');
+        expect(internalRouteFromHref('https://site.example/pages/docs/about', origin)).toBe('/pages/docs/about');
+        expect(internalRouteFromHref('pages/docs/about', origin)).toBe('/pages/docs/about');
+    });
+
+    it('leaves files, the API, other sites, other schemes, in-page anchors and empty hrefs to the browser', () => {
+        expect(internalRouteFromHref('/file/image/2024/trip/a.jpg', origin)).toBeNull();
+        expect(internalRouteFromHref('/api/public/pages', origin)).toBeNull();
+        expect(internalRouteFromHref('/galleriesx', origin)).toBeNull();
+        expect(internalRouteFromHref('https://other.example/pages/docs/about', origin)).toBeNull();
+        expect(internalRouteFromHref('mailto:someone@example.com', origin)).toBeNull();
+        expect(internalRouteFromHref('#top', origin)).toBeNull();
+        expect(internalRouteFromHref('', origin)).toBeNull();
+        expect(internalRouteFromHref(null, origin)).toBeNull();
+        expect(internalRouteFromHref(undefined, origin)).toBeNull();
+        expect(internalRouteFromHref('http://[bad', origin)).toBeNull();
+    });
+
+    it('uses the location of the application as the default origin', () => {
+        expect(internalRouteFromHref(`${window.location.origin}/pages/index`)).toBe('/pages/index');
+        expect(internalRouteFromHref('https://other.example/pages/index')).toBeNull();
     });
 });

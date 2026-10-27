@@ -37,6 +37,21 @@
 - JSON contracts are snake_case (`file_path`, `subject_ids`, `total_pages`); `src/__tests__/services/ApiSnakeCaseContract.test.ts` guards the
   critical ones.
 - Build file URLs through `encodeApiPath()` in `src/tools/safePaths.ts`; never concatenate raw paths into `/file/...` URLs.
+- Page style: a page's custom CSS (`WebSitePage.page_style`, written in the admin page editor, published to `web_site_page.page_style`
+  and returned by the page content endpoint; list endpoints omit it) is applied by `src/components/PageStyle.tsx` as a `<style>` element
+  for as long as `PageView` shows the page, document-wide, so a page can override the site's default style (the `:root` variables of
+  `App.css`) as well as style its own canvas. The canvas is the `.content-section.page-detail` block, which carries `PAGE_CANVAS_CLASS`
+  (`vps-page-canvas`, `src/tools/pageStyle.ts`; identical to the admin editor's canvas class, keep the two in step). `sanitizePageStyle`
+  trims the CSS and neutralises `</style` so the text cannot close the element. The theme context's `applyPageStyle` is a different
+  thing: it merges a theme token object, not CSS text.
+- Internal links: the admin editor's link dialog writes root-relative hrefs into page bodies, `/pages/<path>` for a published page and
+  `/file/<path>` for a published file (built by `tools/internalLinkTools.ts` of `vempain-admin-frontend` from
+  `GET /admin-management/site/links` of the admin backend, every segment URL-encoded), so they match `toFrontendPagePath` and the
+  `/file` prefix the reverse proxy sends to the website backend. `src/components/PageBody.tsx` mounts `PageBodyRenderer` for `PageView`
+  and follows a plain left click on a link the application serves itself (`internalRouteFromHref` in `src/tools/routes.ts`: `/pages/...`,
+  `/galleries...`, `/search`, also as an absolute URL of this site) with the router instead of a page load; a click with a modifier key,
+  a `target`, a `download`, a `/file/...` link, another site or an in-page anchor is left to the browser. Keep the two prefixes in step
+  with the admin frontend's `internalLinkTools.ts`.
 - Preserve the route helpers in `src/tools/routes.ts` (`toFrontendPagePath`, `toBackendPagePath`, ...); the renderer runtime depends on them.
   `DEFAULT_PAGE_PATH` (`index`) there is the front page: the fallback route of `App.tsx` and the site name in the sidebar header (`SideBar.tsx`, a router `Link`
   styled as `.logo`) both lead to `toFrontendPagePath(DEFAULT_PAGE_PATH)`.
@@ -75,9 +90,18 @@
   and is drawn with `object-fit: cover` centred, so the frame always shows the full narrower dimension and the middle of the wider one. The Ant Design
   `Image` wrapper (`.ant-image`) must be sized to the frame through `styles.root` (`THUMBNAIL_WRAPPER_STYLE`); without it the wrapper has no height,
   the image keeps its natural shape and the frame clips the top of a tall thumbnail or leaves the bottom empty under a wide one.
-  The next batch of a gallery loads by itself when the sentinel under the grid scrolls into view (`IntersectionObserver`, 200px ahead,
-  one request at a time through `loadMore`); the "Lataa lisää" button stays below the grid as the fallback and calls the same `loadMore`.
-  Without `IntersectionObserver` (old browsers, jsdom) only the button loads. `@vempain/vempain-rt-renderer` only delegates gallery embeds to the host through
+  The next batch of a gallery loads by itself when the sentinel under the grid scrolls into view (`IntersectionObserver`, 200px ahead);
+  the "Lataa lisää" button and the preview prefetch call the same `loadMore`, which issues one request at a time (`fetchInFlightRef`).
+  That guard holds only while the host's `fetchMoreFiles` promise is pending, so a host must return a promise that settles when the page
+  has arrived, never one that resolves before the request: `GalleryLoader` additionally keeps the pending request in `nextPageRequestRef`
+  and hands it to every caller until it settles, and drops a response that belongs to a previous gallery (`galleryGenerationRef`). A
+  loader that resolves early makes the still-visible sentinel request the same page again and shows every image of that page twice.
+  Without `IntersectionObserver` (old browsers, jsdom) only the button loads.
+  Hovering a thumbnail shows the whole thumbnail in an Ant Design `Tooltip` (`THUMB_TOOLTIP_STYLES`, `THUMB_TOOLTIP_IMAGE_STYLE`). Ant Design
+  caps a tooltip box at 250px, which the preview image would overflow and bleed past the browser edge on the outer columns, so the preview lifts
+  the cap (`styles.root.maxWidth: 'none'`) and bounds the image by the viewport minus a gutter as well as by its fixed maximum size; with the
+  box sized to the image, the tooltip's own overflow handling shifts or flips it into view. Keep both together when changing the preview.
+  `@vempain/vempain-rt-renderer` only delegates gallery embeds to the host through
   the `renderGallery` prop of `PageBodyRenderer`, so gallery and image-overlay changes belong in this repository, not in the renderer.
 - The thumbnail grid is responsive: `repeat(auto-fill, minmax(min(250px, 100%), 1fr))` with no cap on the column count (the grid spans the
   content width, so a wide screen gets as many columns as fit). It drops columns with the
@@ -105,6 +129,9 @@ yarn typecheck
 yarn test
 yarn build:production
 ```
+
+`yarn lint` is type-aware (`parserOptions.projectService`) and fails on `@typescript-eslint/no-deprecated`: any use of functionality that the type declarations
+mark `@deprecated` (Ant Design props, DOM or library APIs) must be replaced by the documented successor. CI runs it before the build.
 
 - CI uses the reusable `frontend-spa.yaml` workflow from `vempain-workflows`. Do not commit `dist/`, `coverage/`, `node_modules/` or local `.env` files.
 - Security findings and their mitigations are recorded in `security/OWASP-2025-audit-report.md`; keep it current when changing sanitization,

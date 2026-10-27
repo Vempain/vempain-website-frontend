@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import type {WebSiteFile} from '../models';
 import {galleryAPI} from '../services';
 import {Spin} from "antd";
@@ -19,10 +19,16 @@ export function GalleryLoader({galleryId, title}: GalleryLoaderProps) {
     const [currentSize, setCurrentSize] = useState<number>(25);
     const [totalElements, setTotalElements] = useState<number>(0);
     const [lastPageFetched, setLastPageFetched] = useState<boolean>(false);
+    /** The request for the next page while it is on its way; whoever asks again meanwhile gets this same promise instead of a second request. */
+    const nextPageRequestRef = useRef<Promise<WebSiteFile[]> | null>(null);
+    /** Grows when the gallery changes, so a next-page response of the previous gallery is dropped instead of appended. */
+    const galleryGenerationRef = useRef(0);
 
     // Reset and fetch first page when gallery changes
     useEffect(() => {
         let active = true;
+        galleryGenerationRef.current += 1;
+        nextPageRequestRef.current = null;
         const timerId = window.setTimeout(() => {
             setLoading(true);
             setWebSiteFileList([]);
@@ -58,37 +64,48 @@ export function GalleryLoader({galleryId, title}: GalleryLoaderProps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [galleryId]);
 
-    async function fetchNextPagedData(): Promise<WebSiteFile[]> {
+    /**
+     * Loads the page after the last loaded one and appends it. The returned promise settles only when the page has arrived (or failed), which is what
+     * GalleryBlock's one-request-at-a-time guard relies on; while it is pending, every further call shares it, so a page is never requested twice.
+     */
+    const fetchNextPagedData = useCallback((): Promise<WebSiteFile[]> => {
         if (lastPageFetched) {
-            return webSiteFileList;
+            return Promise.resolve(webSiteFileList);
+        }
+        if (nextPageRequestRef.current) {
+            return nextPageRequestRef.current;
         }
 
+        const generation = galleryGenerationRef.current;
         setLoading(true);
-        let combined: WebSiteFile[] = webSiteFileList;
-
-        galleryAPI.getGalleryFiles(galleryId, {page: currentPage + 1, size: currentSize})
+        const request = galleryAPI.getGalleryFiles(galleryId, {page: currentPage + 1, size: currentSize})
                 .then((pagedData) => {
-                    if (!pagedData) {
-                        return;
+                    if (!pagedData || generation !== galleryGenerationRef.current) {
+                        return webSiteFileList;
                     }
-                    setWebSiteFileList((prev) => {
-                        combined = [...prev, ...pagedData.content];
-                        return combined;
-                    });
+                    const combined = [...webSiteFileList, ...pagedData.content];
+                    setWebSiteFileList(combined);
                     setCurrentPage(pagedData.page);
                     setCurrentSize(pagedData.size);
                     setTotalElements(pagedData.total_elements);
                     setLastPageFetched(pagedData.last);
+                    return combined;
                 })
-                .catch((error) => {
+                .catch((error: unknown) => {
                     console.error('Error fetching updates to gallery files:', error);
+                    return webSiteFileList;
                 })
                 .finally(() => {
-                    setLoading(false);
+                    if (nextPageRequestRef.current === request) {
+                        nextPageRequestRef.current = null;
+                    }
+                    if (generation === galleryGenerationRef.current) {
+                        setLoading(false);
+                    }
                 });
-
-        return combined;
-    }
+        nextPageRequestRef.current = request;
+        return request;
+    }, [currentPage, currentSize, galleryId, lastPageFetched, webSiteFileList]);
 
     return (
             <Spin spinning={loading}>

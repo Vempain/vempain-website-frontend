@@ -19,6 +19,40 @@ export function toDirectoryIndexFrontendPath(directory: string): string {
     return `/pages/${withIndex}`;
 }
 
+/**
+ * The router path for an anchor href that this single-page application serves itself, or null when the browser should follow the link.
+ * Page bodies written in the admin editor link to published pages as `/pages/<path>` (and to files as `/file/<path>`, which the website
+ * backend streams); the page links, the gallery routes and the search are followed with the router so the site does not reload.
+ * `href` is resolved against `origin`, so a root-relative path, a relative path and an absolute URL of this site all count, while
+ * another site, a `/file/...` or `/api/...` path, a `mailto:` or an in-page `#anchor` return null.
+ */
+export function internalRouteFromHref(href: string | null | undefined, origin: string = window.location.origin): string | null {
+    if (!href) {
+        return null;
+    }
+
+    let url: URL;
+    try {
+        url = new URL(href, origin);
+    } catch {
+        return null;
+    }
+
+    if (url.origin !== origin) {
+        return null;
+    }
+
+    const pathname = url.pathname;
+    const isSpaRoute = pathname.startsWith('/pages/')
+        || pathname === '/galleries' || pathname.startsWith('/galleries/')
+        || pathname === '/search';
+    if (!isSpaRoute) {
+        return null;
+    }
+
+    return pathname + url.search + url.hash;
+}
+
 export function topDirectoryFromPagesPath(pathname: string): string | null {
     const normalized = trimSlashes(pathname);
     if (!normalized.startsWith('pages/')) {
