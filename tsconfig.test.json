@@ -8,12 +8,13 @@
     ],
     "allowJs" : true,
     "verbatimModuleSyntax" : false,
-    "allowImportingTsExtensions" : false,
-    "module" : "CommonJS",
-    "moduleResolution" : "node",
+    "allowImportingTsExtensions" : true,
+    "module" : "ESNext",
+    "moduleResolution" : "bundler",
     "resolveJsonModule" : true
   },
   "include" : [
+    "src/setupTests.ts",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "src/**/*.spec.ts",
