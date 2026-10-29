@@ -1555,11 +1555,11 @@ __metadata:
   linkType: hard
 
 "@mux/mux-data-google-ima@npm:^0.3.17":
-  version: 0.3.18
-  resolution: "@mux/mux-data-google-ima@npm:0.3.18"
+  version: 0.3.19
+  resolution: "@mux/mux-data-google-ima@npm:0.3.19"
   dependencies:
-    mux-embed: "npm:5.18.2"
-  checksum: 10c0/d760eb338580d73cac5f7ea5400718b4099c99643919a9907d304f832c04ca4204b5fe5e74249c33197a07bedbb1834a174fc8144d803b2c20806ae84481cf2b
+    mux-embed: "npm:5.19.0"
+  checksum: 10c0/1f658531df7827e808d5acf05611392552a635ac1f2f32ce7a375c95fbb96ae15cd33eb2d1d1666fbb5e53b6ae7102117abee303dc39134780ac0a97b786d656
   languageName: node
   linkType: hard
 
@@ -2898,12 +2898,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^26.6.5":
-  version: 26.6.5
-  resolution: "@types/node@npm:26.6.5"
+"@types/node@npm:*, @types/node@npm:^26.6.6":
+  version: 26.6.6
+  resolution: "@types/node@npm:26.6.6"
   dependencies:
     undici-types: "npm:~8.9.0"
-  checksum: 10c0/4f791f69466ace7842c09e7bef96cb1ddbb65cf3db916ef7e84f0e2b2a17220b6b816dc7539d01520cadfb17ed7169b8214910900493e0a83be8bc7d124ec20a
+  checksum: 10c0/5cb63f644f6e85a257a9cd2403cbcbe196760e2a35fd3ec9fb8b5cff663e14cc832b198cc17b53f870a2e30900ed45a1fb3f53e6589aba26b8e8c484aa672053
   languageName: node
   linkType: hard
 
@@ -3483,9 +3483,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vempain/vempain-auth-frontend@npm:^2.3.3":
-  version: 2.3.3
-  resolution: "@vempain/vempain-auth-frontend@npm:2.3.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40vempain%2Fvempain-auth-frontend%2F2.3.3%2F95da12a9e0de5489716e90c6255b023c789202fb"
+"@vempain/vempain-auth-frontend@npm:^2.3.4":
+  version: 2.3.4
+  resolution: "@vempain/vempain-auth-frontend@npm:2.3.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40vempain%2Fvempain-auth-frontend%2F2.3.4%2Fb519d9776a576dad39f511b844435a184234d343"
   dependencies:
     "@ant-design/icons": "npm:^6.3.4"
     antd: "npm:^6.6.8"
@@ -3497,13 +3497,13 @@ __metadata:
     react: ^19.2.5
     react-dom: ^19.2.5
     react-router-dom: ^7.14.1
-  checksum: 10c0/678d3a48553c7cdcc732c8013a743667469834cf3365993a4a3f520773a27ace3e396b662c8e60a5b596e47c7d83da09a42c11cdc7a3d8babb676ba30d11b7f7
+  checksum: 10c0/92a74ba5d9029cfbacf44037d217224dd17d34c3eee26b4f1d6d7deebfec1f354258886325ef5ea00a04e5776af41b7ec76774a0e748c4cda85182b5878598cf
   languageName: node
   linkType: hard
 
-"@vempain/vempain-rt-renderer@npm:1.0.29":
-  version: 1.0.29
-  resolution: "@vempain/vempain-rt-renderer@npm:1.0.29::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40vempain%2Fvempain-rt-renderer%2F1.0.29%2F881c1e2a728c710416accd5db0324a4574122ddf"
+"@vempain/vempain-rt-renderer@npm:1.0.30":
+  version: 1.0.30
+  resolution: "@vempain/vempain-rt-renderer@npm:1.0.30::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40vempain%2Fvempain-rt-renderer%2F1.0.30%2F816067279cac441613005b5bb1d0194c3cdf7bb5"
   peerDependencies:
     "@ant-design/charts": ^2.6.5
     antd: ^6.4.3
@@ -3513,7 +3513,7 @@ __metadata:
     react-leaflet: ^5.0.0
     react-player: ^3.4.0
     react-router-dom: ^7.15.1
-  checksum: 10c0/84e8524f266c5f3c95322d6568ec3cb7747a2621a454b4affdc4dd3de748424489a08cd802df6079eff20765820adb913801b36a130239dcf7d4d33ffae68d6c
+  checksum: 10c0/f8e9fb8c9bbd2bc5001b925400dfc7a49ae50420471cc7a624e77149c0da43e85a5760c69be8035c5bdb3de997b8074cba2c52d54027c4472bbdaf383ed545cf
   languageName: node
   linkType: hard
 
@@ -3526,15 +3526,15 @@ __metadata:
     "@eslint/js": "npm:^10.0.1"
     "@types/jest": "npm:^30.0.0"
     "@types/leaflet": "npm:^1.9.22"
-    "@types/node": "npm:^26.6.5"
+    "@types/node": "npm:^26.6.6"
     "@types/react": "npm:^19.3.0"
     "@types/react-dom": "npm:^19.3.0"
     "@typescript/native": "npm:typescript@^7.0.2"
-    "@vempain/vempain-auth-frontend": "npm:^2.3.3"
-    "@vempain/vempain-rt-renderer": "npm:1.0.29"
+    "@vempain/vempain-auth-frontend": "npm:^2.3.4"
+    "@vempain/vempain-rt-renderer": "npm:1.0.30"
     "@vitejs/plugin-react": "npm:^6.1.2"
     antd: "npm:^6.6.8"
-    axios: "npm:^1.20.0"
+    axios: "npm:^1.21.0"
     corepack: "npm:^0.36.0"
     dayjs: "npm:^1.11.23"
     env-cmd: "npm:^11.0.0"
@@ -3549,7 +3549,7 @@ __metadata:
     react-dom: "npm:^19.3.1"
     react-leaflet: "npm:^5.0.0"
     react-player: "npm:^3.4.0"
-    react-router-dom: "npm:^7.18.4"
+    react-router-dom: "npm:^7.18.5"
     ts-jest: "npm:^29.4.15"
     typescript: "npm:@typescript/typescript6@^6.0.2"
     typescript-eslint: "npm:^8.72.1"
@@ -3786,15 +3786,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.20.0":
-  version: 1.20.0
-  resolution: "axios@npm:1.20.0"
+"axios@npm:^1.21.0":
+  version: 1.21.0
+  resolution: "axios@npm:1.21.0"
   dependencies:
     follow-redirects: "npm:^1.16.0"
     form-data: "npm:^4.0.6"
     https-proxy-agent: "npm:^5.0.1"
     proxy-from-env: "npm:^2.1.0"
-  checksum: 10c0/976088acf532286356f4c2e65df1ef47ba7da3936d83e928d0d64357bbf5370456abd3eb5826c15df322335fcb1fe200d4a84b4fcf20ffccdd63b40d80fa495c
+  checksum: 10c0/adaf1e81762aa7476b95a588f173796e9251a2683c1ffc3e2dfb3ae705c4f629976ef05ded4e7a513832214072058d480fb0bc7e46fe819621909a70f9571ed2
   languageName: node
   linkType: hard
 
@@ -3895,12 +3895,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"baseline-browser-mapping@npm:^2.11.29":
-  version: 2.11.33
-  resolution: "baseline-browser-mapping@npm:2.11.33"
+"baseline-browser-mapping@npm:^2.11.33":
+  version: 2.11.34
+  resolution: "baseline-browser-mapping@npm:2.11.34"
   bin:
     baseline-browser-mapping: dist/cli.cjs
-  checksum: 10c0/41ccaadfbae9d8df112b8771631465e7f04def4a319502f99d59ad04879ab2a35d609baf27a9feb523f8eee1728d7a9fd71125a13eca5bf06bcb240212c33d5e
+  checksum: 10c0/294a4513440f4cacca2d84032ccff2dd284b429356af0c12574360d1e471ad1ab2383b101261193bec87891f90d2fea29cb75d3e54b2b69a060c6e726c433c58
   languageName: node
   linkType: hard
 
@@ -3930,17 +3930,17 @@ __metadata:
   linkType: hard
 
 "browserslist@npm:^4.24.0":
-  version: 4.29.4
-  resolution: "browserslist@npm:4.29.4"
+  version: 4.29.5
+  resolution: "browserslist@npm:4.29.5"
   dependencies:
-    baseline-browser-mapping: "npm:^2.11.29"
-    caniuse-lite: "npm:^1.0.30001816"
-    electron-to-chromium: "npm:^1.5.459"
-    node-releases: "npm:^2.0.59"
+    baseline-browser-mapping: "npm:^2.11.33"
+    caniuse-lite: "npm:^1.0.30001819"
+    electron-to-chromium: "npm:^1.5.464"
+    node-releases: "npm:^2.0.60"
     update-browserslist-db: "npm:^1.3.4"
   bin:
     browserslist: cli.js
-  checksum: 10c0/e706dfb56f89a78a3b5fef681d9793327779f5d30885606e49c4af788a7f60b92dd8c2ead153d780109e8fcc2529a784491854037b18c8b8700fb464b87f9f93
+  checksum: 10c0/a27b0d1dece626af14cad3e0eca07fc17608b4d306a15cf2b2c5dcb30cadcc118d3da7400866287587feb3531ad8907cffc6592d21198269960a0d381f8349bd
   languageName: node
   linkType: hard
 
@@ -4020,7 +4020,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001816":
+"caniuse-lite@npm:^1.0.30001819":
   version: 1.0.30001819
   resolution: "caniuse-lite@npm:1.0.30001819"
   checksum: 10c0/6842319cdb9c8ac950ef0910fc3cc7dac3320b96b150de83ac65162c6b4906d2721ca830943a9e5a833c265b186aa0c417402ddd4157108bbf5474d6fabdc843
@@ -4660,10 +4660,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.5.459":
-  version: 1.5.464
-  resolution: "electron-to-chromium@npm:1.5.464"
-  checksum: 10c0/65e6244c3b109942497ec6f7e8294258e74a7b410c804339fec39ecb2921926423e08f8f3a2a7979008c1a196a4c57145c1e76abe40ba374f60028fab23baa10
+"electron-to-chromium@npm:^1.5.464":
+  version: 1.5.467
+  resolution: "electron-to-chromium@npm:1.5.467"
+  checksum: 10c0/6bd9ae721c5cbe3e01e0194a6af84be5dcb5961fec1a01149e67c95d6de2f2308ec21cfcdedd3b3d12eac8e3774628f2216f852eb5468575b827cf6ad517ea82
   languageName: node
   linkType: hard
 
@@ -5375,9 +5375,9 @@ __metadata:
   linkType: hard
 
 "hls.js@npm:^1.6.5, hls.js@npm:~1.7.0":
-  version: 1.7.3
-  resolution: "hls.js@npm:1.7.3"
-  checksum: 10c0/c44c0098b9f4b53cb0c2cc2301d4cad907a77c60f470fa344b8cfc5077da4ccab9590d47e5cf81100a958d4aa43d7dc7bcb6566197fd9ae170ec10cea8af3e8c
+  version: 1.7.4
+  resolution: "hls.js@npm:1.7.4"
+  checksum: 10c0/7c7534bddb262ad4067661f1db9120d7fb76626fd7f9de12d8cb1f5dddf5792a5fe9e7b1031351711d2657456a3e2b687ce3f95e332a24ebdbb56465a942f28a
   languageName: node
   linkType: hard
 
@@ -6649,10 +6649,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mux-embed@npm:5.18.2, mux-embed@npm:^5.18.2":
-  version: 5.18.2
-  resolution: "mux-embed@npm:5.18.2"
-  checksum: 10c0/c9e31b3e5d4512641218e206420d31123ac0c2d3dd19d5f5e97fec6a2cdd021693c9305cafb5f1966dd5869b4dbbe6a556ca8aca065723b4817e280679388b17
+"mux-embed@npm:5.19.0, mux-embed@npm:^5.18.2":
+  version: 5.19.0
+  resolution: "mux-embed@npm:5.19.0"
+  checksum: 10c0/6f43802a16a1cc2a61237033782a71fb7f36dd238362c8b5585d2845de6059f6c7e17f5e06ee415b970fc33e58cebdc688515b0986e4f0dbeb354b5c9fdd7c9b
   languageName: node
   linkType: hard
 
@@ -6732,7 +6732,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-releases@npm:^2.0.59":
+"node-releases@npm:^2.0.60":
   version: 2.0.60
   resolution: "node-releases@npm:2.0.60"
   checksum: 10c0/f0c7b37cf83405291c0de87e15b5cef4af167248f8cc91b7c1c2281338c0e7e9aebfb77e0153ba335bb4c6ec5b1563431cfba93e8c83292760856012d93cb93e
@@ -6976,13 +6976,13 @@ __metadata:
   linkType: hard
 
 "postcss@npm:^8.5.30":
-  version: 8.5.31
-  resolution: "postcss@npm:8.5.31"
+  version: 8.5.32
+  resolution: "postcss@npm:8.5.32"
   dependencies:
     nanoid: "npm:^3.3.20"
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.2"
-  checksum: 10c0/52f94c6655f86f568a803ce9c8eb3c749e109cc711d26644c4cde953b30c1b947a2f25af3b9453de68584ac655572f46ed8e830b8ab2f21dd226b3f640992e00
+  checksum: 10c0/5fa6cad84e277c2ced965dc7e8e7c0b8d7e5b76a6835591b57a43fde46e671d0c8428d365e9141c080abaae5441d495ed77ffd7472c5bd41d6c2154bd03c01d7
   languageName: node
   linkType: hard
 
@@ -7128,21 +7128,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.18.4":
-  version: 7.18.4
-  resolution: "react-router-dom@npm:7.18.4"
+"react-router-dom@npm:^7.18.5":
+  version: 7.18.5
+  resolution: "react-router-dom@npm:7.18.5"
   dependencies:
-    react-router: "npm:7.18.4"
+    react-router: "npm:7.18.5"
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10c0/b337acffb669fd977423e3ef2a0551a5d68c2447c718942b232cae367fd599723525e412b4ad0d08607189f962571dfc7ef0373d47fcf0ae301a860510e5e1f1
+  checksum: 10c0/9e19ccb3fa061d86ad90eb906657cab6b2e4313b4eb02882f7515493c3d61c978a383ee0954854f2a9238ac013bdd03c526a5de14819c8ecaae62b5280774030
   languageName: node
   linkType: hard
 
-"react-router@npm:7.18.4":
-  version: 7.18.4
-  resolution: "react-router@npm:7.18.4"
+"react-router@npm:7.18.5":
+  version: 7.18.5
+  resolution: "react-router@npm:7.18.5"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -7152,7 +7152,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/352d103f9d738c7bf56cbb135c0d3d44e6325d15e360f58b6e844c1f5f8cbcd4ccb2de347f14e53984683fc237505a045633e9cb92c5457a1162dae054e08a32
+  checksum: 10c0/dbed9b4d0019873615028e2fe7bf7782ab4f41d9f287595b9a82f4a6d619dc5d3b88449fb3e717282f9f558312f29f88325372a7bb67355472703291607f9280
   languageName: node
   linkType: hard
 

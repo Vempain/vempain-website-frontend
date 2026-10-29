@@ -133,6 +133,10 @@ yarn build:production
 `yarn lint` is type-aware (`parserOptions.projectService`) and fails on `@typescript-eslint/no-deprecated`: any use of functionality that the type declarations
 mark `@deprecated` (Ant Design props, DOM or library APIs) must be replaced by the documented successor. CI runs it before the build.
 
+`yarn typecheck` and the `yarn build` type-check step run `tsc -b`: `tsconfig.json` is a solution file (`files: []` plus references to
+`tsconfig.app.json`, `tsconfig.node.json` and `tsconfig.test.json`), which a plain `tsc` accepts without checking a single source, so only the
+`-b` form fails on type errors (`vite build` alone never does).
+
 - CI uses the reusable `frontend-spa.yaml` workflow from `vempain-workflows`. Do not commit `dist/`, `coverage/`, `node_modules/` or local `.env` files.
 - Security findings and their mitigations are recorded in `security/OWASP-2025-audit-report.md`; keep it current when changing sanitization,
   URL building or authentication handling.
@@ -150,7 +154,9 @@ The `jest` block of `package.json` papers over the gap between the Vite/ESM buil
 | `react-leaflet`, `@vempain/vempain-rt-renderer`, `react-player` | ESM-only packages replaced by stubs in `__mocks__/`                                                        |
 
 `src/setupTests.ts` also sets `IS_REACT_ACT_ENVIRONMENT`, a `window.matchMedia` stub and `TextEncoder`/`TextDecoder`. `tsconfig.test.json` adds
-`vite/client` types, `allowJs` and `resolveJsonModule` on top of `tsconfig.app.json`.
+`vite/client` types, `allowJs` and `resolveJsonModule` on top of `tsconfig.app.json` and owns `src/setupTests.ts` (excluded from the app
+project, it needs the `node` types). It keeps `module: ESNext` with `moduleResolution: bundler` because TypeScript 6 removed `node10`;
+ts-jest still emits CommonJS for Jest.
 
 ## Tag ACL rule
 
