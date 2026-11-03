@@ -58,18 +58,21 @@ class ResizeObserverMock {
 
 Object.defineProperty(globalThis, 'ResizeObserver', {value: ResizeObserverMock});
 
-/** The backend answers with the content of the selected directory: plain keys are segments, keys with a slash are full paths. */
+/**
+ * The backend answers with the content of the selected directory: plain keys are segments, keys with a slash are full paths. The title is
+ * the header of the page (for a directory the header of its index page), which is what the sidebar shows; `name` is the path segment.
+ */
 const tree: DirectoryNode[] = [
-    {title: 'Index', key: 'index', is_leaf: true},
-    {title: 'Child', key: 'child', is_leaf: true},
+    {title: 'Documentation front page', key: 'index', name: 'index', is_leaf: true},
+    {title: 'A child page', key: 'child', name: 'child', is_leaf: true},
     {
-        title: 'Sub', key: 'sub', is_leaf: false, children: [
-            {title: 'Index', key: 'index', is_leaf: true},
-            {title: 'Deep', key: 'deep', is_leaf: true},
+        title: 'Sub section', key: 'sub', name: 'sub', is_leaf: false, children: [
+            {title: 'Sub section', key: 'index', name: 'index', is_leaf: true},
+            {title: 'Deep page', key: 'deep', name: 'deep', is_leaf: true},
         ],
     },
-    {title: 'Nested', key: 'nested', is_leaf: false, children: [{title: 'Deep', key: 'deep', is_leaf: true}]},
-    {title: 'Other', key: '/other/page/', is_leaf: true},
+    {title: 'nested', key: 'nested', name: 'nested', is_leaf: false, children: [{title: 'Deep page', key: 'deep', name: 'deep', is_leaf: true}]},
+    {title: 'Other page', key: '/other/page/', name: 'page', is_leaf: true},
 ];
 
 type MatchMediaStub = ReturnType<typeof window.matchMedia> & { listeners: Array<(event: MediaQueryListEvent) => void> };
@@ -142,6 +145,9 @@ describe('SideBar', () => {
         expect(pageAPI.getDirectoryTree).toHaveBeenCalledWith('docs');
         const keys = Array.from(container.querySelectorAll('[data-testid="tree-node"]')).map((node) => node.getAttribute('data-key'));
         expect(keys).toEqual(['docs/index', 'docs/child', 'docs/sub', 'docs/sub/deep', 'docs/nested', 'docs/nested/deep', 'other/page']);
+        // The labels are the page headers sent by the backend, not the path segments of the keys
+        const labels = Array.from(container.querySelectorAll('[data-testid="tree-node"] > span')).map((node) => node.textContent);
+        expect(labels).toEqual(['Documentation front page', 'A child page', 'Sub section', 'Deep page', 'nested', 'Deep page', 'Other page']);
         expect(container.querySelector('[data-key="docs/sub"]')?.getAttribute('data-selectable')).toBe('true');
         expect(container.querySelector('[data-key="docs/nested"]')?.getAttribute('data-selectable')).toBe('false');
         expect(container.querySelector('[data-key="docs/child"]')?.getAttribute('data-selectable')).toBe('true');
