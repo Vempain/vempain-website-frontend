@@ -1,73 +1,73 @@
 {
-  "name" : "@vempain/vempain-website-frontend",
-  "description" : "Vempain Website frontend",
-  "author" : "Paul-Erik Törrönen",
-  "homepage" : "https://vempain.poltsi.fi",
-  "license" : "GPL-2.0",
-  "version" : "0.9.0",
-  "type" : "module",
-  "engines" : {
-    "node" : ">=18.0.0",
-    "yarn" : ">=4.0.0"
+  "name": "@vempain/vempain-website-frontend",
+  "description": "Vempain Website frontend",
+  "author": "Paul-Erik Törrönen",
+  "homepage": "https://vempain.poltsi.fi",
+  "license": "GPL-2.0",
+  "version": "0.9.0",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0",
+    "yarn": ">=4.0.0"
   },
-  "packageManager" : "yarn@4.18.1",
-  "scripts" : {
-    "prebuild" : "node generateBuildInfo.js",
-    "start" : "env-cmd -f .env.local vite",
-    "build" : "yarn prebuild && tsc -b && env-cmd -f .env.prod vite build",
-    "lint" : "eslint .",
-    "typecheck" : "tsc -b",
-    "test" : "jest --passWithNoTests",
-    "test:watch" : "jest --watch",
-    "test:coverage" : "jest --coverage . --passWithNoTests",
-    "preview" : "vite preview",
-    "build:production" : "yarn prebuild && env-cmd -f .env.prod vite build"
+  "packageManager": "yarn@4.18.1",
+  "scripts": {
+    "prebuild": "node generateBuildInfo.js",
+    "start": "env-cmd -f .env.local vite",
+    "build": "yarn prebuild && tsc -b && env-cmd -f .env.prod vite build",
+    "lint": "eslint .",
+    "typecheck": "tsc -b",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage . --passWithNoTests",
+    "preview": "vite preview",
+    "build:production": "yarn prebuild && env-cmd -f .env.prod vite build"
   },
-  "dependencies" : {
-    "@ant-design/charts" : "^2.6.7",
-    "@ant-design/icons" : "^6.3.4",
-    "@vempain/vempain-auth-frontend" : "^2.3.5",
-    "@vempain/vempain-rt-renderer" : "1.0.31",
-    "antd" : "^6.6.8",
-    "axios" : "^1.21.0",
-    "dayjs" : "^1.11.23",
-    "leaflet" : "^1.9.4",
-    "react" : "^19.3.1",
-    "react-dom" : "^19.3.1",
-    "react-leaflet" : "^5.0.0",
-    "react-player" : "^3.4.0",
-    "react-router-dom" : "^7.18.5"
+  "dependencies": {
+    "@ant-design/charts": "^2.6.7",
+    "@ant-design/icons": "^6.3.4",
+    "@vempain/vempain-auth-frontend": "^2.3.5",
+    "@vempain/vempain-rt-renderer": "1.0.31",
+    "antd": "^6.7.0",
+    "axios": "^1.21.0",
+    "dayjs": "^1.11.23",
+    "leaflet": "^1.9.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-leaflet": "^5.0.0",
+    "react-player": "^3.4.0",
+    "react-router-dom": "^7.18.5"
   },
-  "devDependencies" : {
-    "@eslint/js" : "^10.0.1",
-    "@types/jest" : "^30.0.0",
-    "@types/leaflet" : "^1.9.22",
-    "@types/node" : "^26.6.6",
-    "@types/react" : "^19.3.0",
-    "@types/react-dom" : "^19.3.0",
-    "@typescript/native" : "npm:typescript@^7.0.2",
-    "@vitejs/plugin-react" : "^6.2.1",
-    "corepack" : "^0.36.0",
-    "env-cmd" : "^11.0.0",
-    "eslint" : "^10.14.0",
-    "eslint-plugin-react-hooks" : "^7.1.1",
-    "eslint-plugin-react-refresh" : "^0.5.7",
-    "globals" : "^17.14.0",
-    "jest" : "^30.5.2",
-    "jest-environment-jsdom" : "^30.5.2",
-    "ts-jest" : "^29.4.15",
-    "typescript" : "npm:@typescript/typescript6@^6.0.2",
-    "typescript-eslint" : "^8.72.1",
-    "vite" : "^8.3.6"
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/jest": "^30.0.0",
+    "@types/leaflet": "^1.9.22",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "@vitejs/plugin-react": "^6.2.1",
+    "corepack": "^0.36.0",
+    "env-cmd": "^11.0.0",
+    "eslint": "^10.14.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.14.0",
+    "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2",
+    "ts-jest": "^29.4.15",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^8.3.6"
   },
-  "jest" : {
-    "preset" : "ts-jest/presets/js-with-ts",
-    "testEnvironment" : "jest-environment-jsdom",
-    "setupFilesAfterEnv" : [
+  "jest": {
+    "preset": "ts-jest/presets/js-with-ts",
+    "testEnvironment": "jest-environment-jsdom",
+    "setupFilesAfterEnv": [
       "<rootDir>/src/setupTests.ts"
     ],
-    "collectCoverage" : true,
-    "collectCoverageFrom" : [
+    "collectCoverage": true,
+    "collectCoverageFrom": [
       "src/**/*.{ts,tsx}",
       "!src/**/*.d.ts",
       "!src/main.tsx",
@@ -76,35 +76,35 @@
       "!src/services/**",
       "!src/__tests__/**"
     ],
-    "coverageThreshold" : {
-      "global" : {
-        "statements" : 95,
-        "branches" : 95,
-        "functions" : 95,
-        "lines" : 95
+    "coverageThreshold": {
+      "global": {
+        "statements": 95,
+        "branches": 95,
+        "functions": 95,
+        "lines": 95
       }
     },
-    "moduleNameMapper" : {
-      "^react-player$" : "<rootDir>/__mocks__/reactPlayerMock.js",
-      "^react-leaflet$" : "<rootDir>/__mocks__/reactLeafletMock.tsx",
-      "^@vempain/vempain-rt-renderer$" : "<rootDir>/__mocks__/rtRendererMock.tsx",
-      "^antd/es/(.*)$" : "antd/lib/$1",
-      "^@ant-design/icons$" : "<rootDir>/__mocks__/antdIconsMock.js",
-      "^(\\.{1,2}/)+services$" : "<rootDir>/__mocks__/servicesMock.ts",
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$" : "<rootDir>/__mocks__/fileMock.js",
-      "\\.(css|less)$" : "<rootDir>/__mocks__/styleMock.js"
+    "moduleNameMapper": {
+      "^react-player$": "<rootDir>/__mocks__/reactPlayerMock.js",
+      "^react-leaflet$": "<rootDir>/__mocks__/reactLeafletMock.tsx",
+      "^@vempain/vempain-rt-renderer$": "<rootDir>/__mocks__/rtRendererMock.tsx",
+      "^antd/es/(.*)$": "antd/lib/$1",
+      "^@ant-design/icons$": "<rootDir>/__mocks__/antdIconsMock.js",
+      "^(\\.{1,2}/)+services$": "<rootDir>/__mocks__/servicesMock.ts",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
     },
-    "transform" : {
-      "^.+\\.[tj]sx?$" : [
+    "transform": {
+      "^.+\\.[tj]sx?$": [
         "<rootDir>/jest/tsJestImportMetaTransformer.cjs",
         {
-          "tsconfig" : "tsconfig.test.json"
+          "tsconfig": "tsconfig.test.json"
         }
       ]
     }
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "git+https://github.com/Vempain/vempain-file-frontend.git"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vempain/vempain-file-frontend.git"
   }
 }
